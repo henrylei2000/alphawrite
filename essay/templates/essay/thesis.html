@@ -1,0 +1,45 @@
+{% extends "includes/base.html" %}
+{% block content %}
+<h1>{{ thesis.title }}</h1>
+<h2>{{ thesis }}</h2>
+<h2>{{ phrase }}</h2>
+<a href="{% url 'essay:index' %}">Another Topic?</a>
+
+<blockquote><center><font size="4" face="verdana"><b>{{ thesis.title }}</b></font>
+    <p>an Online Outline</p>
+</center><h3>Introductory Paragraph</h3><blockquote>
+    <font size="3">Begin with an interesting quotation related to your opinion about {{ thesis.topic }}<p><strong>{{ phrase }}</strong></p></font><p>
+    <font size="3"> - End the Intro paragraph with your thesis statement:</font></p><p>
+    <font size="4" color="black">{{ thesis }}</font>.</p><p></p><hr width="45%"></blockquote>
+    <h3>Body Paragraph or Section #1</h3>
+    <blockquote><font size="3">Topic of the body thesis: {{ thesis.counterargument }}</font>
+        <br><font size="4" color="black"></font><p>
+            <font size="3">- Find evidence - like facts, examples, quotations, or statistics that back it up or support the topic sentence of this paragraph.</font>
+        </p><p><font size="3">- Explain how your evidence supports the topic sentence</font></p><p>
+            <font size="4" color="black">Another example that shows that {{ thesis.counterargument }} is...</font></p><p>
+            <font size="3"> - Find more evidence - facts, examples, quotations, or statistics that back it up or support the topic sentence of this paragraph.</font></p><p>
+            <font size="3"> - Explain how this second piece of evidence supports the topic sentence.</font></p><p></p>
+    </blockquote><h3>Body Paragraph or Section #2</h3>
+    <blockquote><font size="4" color="black">Even though {{ thesis.counterargument }}, because {{ thesis.argument_2 }}.</font><p>
+        <font size="3">- Find evidence - like facts, examples, quotations, or statistics that back it up or support the topic sentence of this paragraph.</font></p><p>
+        <font size="3">- Explain how your evidence supports the topic sentence</font></p><p>
+        <font size="4" color="black">Another example that shows that {{ thesis.argument_2 }} is...</font></p><p>
+        <font size="3"> - Find more evidence - facts, examples, quotations, or statistics that back it up or support the topic sentence of this paragraph.</font></p><p>
+        <font size="3"> - Explain how this second piece of evidence supports the topic sentence.</font></p><p></p>
+    </blockquote><h3>Body Paragraph or Section #3</h3><blockquote>
+        <font size="4" color="black">The most important reason  is because {{ thesis.argument_1 }}.</font><p>
+        <font size="3">- Find evidence - like facts, examples, quotations, or statistics that back it up or support the topic sentence of this paragraph.</font></p><p>
+        <font size="3">- Explain how your evidence supports the topic sentence</font></p><p>
+        <font size="4" color="black">Another example that shows that {{ thesis.argument_1 }} is...</font></p><p>
+        <font size="3"> - Find more evidence - facts, examples, quotations, or statistics that back it up or support the topic sentence of this paragraph.</font></p><p>
+        <font size="3"> - Explain how this second piece of evidence supports the topic sentence.</font></p><p></p></blockquote><h2>Conclusion</h2><blockquote>
+        <font size="4" color="black">So it is clear that although {{ thesis.counterargument }},  for two main reasons. First, {{ thesis.argument_2 }}. But most importantly, {{ thesis.argument_1 }}.</font><p>
+        <font size="3">- Now you will return to your opening attention-getter from the introduction</font></p><p>
+        <font size="3"> - Then end your essay with a powerful <i>So What?</i> statement.</font></p><p></p>
+    </blockquote>
+    <font size="3"><br><br><font size="2" face="verdana,arial,helvetica"></font>
+        <center>
+        <font size="2" face="verdana,arial,helvetica">Do you want to print or copy and <a href="mailto:">email</a> this page?</font>
+            <br><br>brought to you by <a href="http://127.0.0.1:8000/essay" target="_blank">alphaWrite</a>.</center></font>
+</blockquote>
+{% endblock %}
