@@ -1,0 +1,1 @@
+web: gunicorn alphawrite.wsgi --log-file -
