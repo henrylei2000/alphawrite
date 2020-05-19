@@ -1,23 +1,14 @@
 {% extends "includes/base.html" %}
-{% block style %}
-<style>
-textarea {
-  width: 300px;
-  height: 350px;
-}
-</style>
-{% endblock style %}
 
 {% block content %}
 <body class="bg-light">
     <div class="container">
   <div class="py-5 text-center">
-    <h1 style="margin: 40 10 20 10; font-family: Times"><font color="red">&alpha;</font>Write</h1>
-    <p class="lead"> facilitates academic writing by allowing you to devote your time to meeting core requirements
-      rather than dealing with the more standard details, thereby reducing overall writing time.</p>
+    <h2>We Help You</h2>
+    <p class="lead">find a topic, create a good thesis statement, and generate an outline.</p>
   </div>
   <div class="row">
-    <div class="col-md-4 order-md-2 mb-4" id="outline">
+    <div class="col-md-4 order-md-2 mb-4">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
         <span class="text-muted">Outline</span>
       </h4>
@@ -32,8 +23,7 @@ textarea {
         <li class="list-group-item d-flex justify-content-between lh-condensed">
           <div>
             <h6 class="my-0">Body Paragraph</h6>
-            <small class="text-muted">
-              Find evidence - like facts, examples, quotations, or statistics that back it up or support the topic sentence</small>
+            <small class="text-muted">Brief description</small>
           </div>
           <span class="text-muted">100 words</span>
         </li>
@@ -61,39 +51,57 @@ textarea {
       </ul>
     </div>
     <div class="col-md-8 order-md-1">
-
+    <form action="{% url 'essay:build' %}" method="post">
+    {% csrf_token %}
       <div class="form-group">
-        <label for="exampleFormControlTextarea1">Your essay assignment:</label>
-          <textarea class="form-control rounded-1" name="assignment" id="assignment" rows="3"></textarea>
+        <label for="exampleFormControlInput1">What's the topic you want to write about?</label>
+        <input class="form-control" id="topic" name="topic" placeholder="">
       </div>
-      <div class="form-group text-right">
-          <button class="btn btn-primary" id="ask">ask &alpha;Write</button>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">What's your main opinion on this topic?</label>
+        <input class="form-control" name="opinion" placeholder="">
       </div>
-    <span class="debug">&nbsp;</span>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">What's the strongest argument supporting your opinion?</label>
+        <input class="form-control" name="argument_1" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">What's a second good argument that supports your opinion?</label>
+        <input class="form-control" name="argument_2" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlTextarea1">What's the main argument against your opinion?</label>
+        <input class="form-control" name="counterargument" rows="2"></input>
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">What's a possible title for your Essay?</label>
+        <input class="form-control" name="title" placeholder="">
+      </div>
+      <div class="form-group">
+        <input class="btn btn-primary" type="submit" value="Build a Thesis">
+      </div>
+    </form>
+    <span>&nbsp;</span>
     </div>
 </div>
 </body>
-{% endblock content %}
+{% endblock %}
 
 {% block javascript %}
 <script>
-    $("#outline").hide();
     var token = '{{csrf_token}}';
-    $("#ask").click(function () {
+    $("#topic").change(function () {
       var url = "{% url 'essay:span' %}";
       $.ajax({
         headers: { "X-CSRFToken": token },
-        method: "POST",
         url: url,
-        data: {assignment: $.trim($("#assignment").val())},
         success: function (data) {
-          $(".debug").html(data);
-          $("#outline").show();
+          $("span").html(data);
         }
       });
     });
 </script>
-{% endblock javascript %}
+{% endblock %}
 
 
 

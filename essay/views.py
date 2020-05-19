@@ -1,9 +1,10 @@
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from .models import Transition, Thesis
+from .models import Transition, Verb, Thesis, Assignment
 
 
 def index(request):
@@ -22,7 +23,16 @@ def build(request):
 
     phrase = Transition("sequence").get_phrase()
 
+    verb = Verb("literary").get_verb()
+
     return render(request, 'essay/thesis.html', {
         'thesis': Thesis(components),  # pass the variable to html page
         'phrase': phrase,
+        'verb': verb
     })
+
+
+def span(request):
+    assignment = request.POST['assignment']
+    purpose = Assignment(assignment).process().get_purpose()
+    return HttpResponse("The purpose of this writing: " + purpose)
