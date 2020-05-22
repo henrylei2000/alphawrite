@@ -21,22 +21,16 @@
 </ul>
 <div class="tab-content mt-5" id="myTabContent">
   <div class="tab-pane fade show active" id="prewriting" role="tabpanel" aria-labelledby="prewriting-tab">
-<h2>Invent the Ideas</h2>
-<div class="alert alert-warning">
-  <div><strong>Summary:</strong></div>
-  <div>This section explains the prewriting (invention) stage of the composing process. It includes processes, strategies, and questions to help you begin to write.</div>
-</div>
-<p><strong>Ask yourself questions</strong></p>
-<div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <div class="input-group-text" id="btnGroupAddon">Topic</div>
+    <div><h4>What's the topic are you writing about</h4></div>
+    <div class="input-group mb-5">
+      <input type="text" class="form-control" placeholder="Hitler">
+      <div class="input-group-append">
+        <span class="btn btn-primary" id="topic_go">Go</span>
+      </div>
     </div>
-    <input type="text" class="form-control" placeholder="Hitler" aria-label="Input group example" aria-describedby="btnGroupAddon">
-  </div>
-</div>
-
-<p>Definition</p>
+    <div id="idea_questions">
+      <!-- continued questions for ideas -->
+      <p>Definition</p>
 <ul>
 <li>How does the dictionary define ____?</li>
 <li>What do I mean by ____?</li>
@@ -109,6 +103,10 @@
 </ol>
 <p>Make an analogy</p>
 <p>Choose an activity from column A to explain it by describing it in terms of an activity from column B (or vice-versa).</p>
+      <!-- end of questions for ideas-->
+    </div>
+
+
   </div>
   <div class="tab-pane fade" id="stasis" role="tabpanel" aria-labelledby="stasis-tab">stasis...</div>
   <div class="tab-pane fade" id="thesis" role="tabpanel" aria-labelledby="thesis-tab">Thesis...</div>
@@ -188,8 +186,9 @@
 {% block javascript %}
 <script>
 $(function() {
-    $("#invention").click(function () {
-      alert("invention clicked.");
+    $("#idea_questions").hide();
+    $("#topic_go").click(function () {
+      $("#idea_questions").fadeIn('slow');
     });
     $("#ask").click(function () {
       var url = "{% url 'essay:span' %}";
