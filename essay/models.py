@@ -149,14 +149,16 @@ class Assignment:
 
 
 class Idea:
-    questions = [
-        "How does the dictionary define {{topic}}?",
-    ]
+    questions = {
+        "object": ["How does the dictionary define {{topic}}?",],
+        "human":  ["What group of persons does {{topic}} belong to?",],
+    }
 
     def __init__(self, topic, nature):
         self.topic = topic
         self.nature = nature
 
     def get_question(self):
-        q = self.questions[0]
+        qs = self.questions.get(self.nature)
+        q = qs[0]
         return q.replace("{{topic}}", self.topic)
