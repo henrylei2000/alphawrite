@@ -147,3 +147,16 @@ class Assignment:
     def get_topic(self):
         return self.topic
 
+
+class Idea:
+    questions = [
+        "How does the dictionary define {{topic}}?",
+    ]
+
+    def __init__(self, topic, nature):
+        self.topic = topic
+        self.nature = nature
+
+    def get_question(self):
+        q = self.questions[0]
+        return q.replace("{{topic}}", self.topic)

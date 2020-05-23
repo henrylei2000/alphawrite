@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from .models import Transition, Verb, Thesis, Assignment
+from .models import Transition, Verb, Thesis, Assignment, Idea
 
 
 def index(request):
@@ -36,3 +36,14 @@ def span(request):
     assignment = request.POST['assignment']
     purpose = Assignment(assignment).process().get_purpose()
     return HttpResponse("The purpose of this writing: " + purpose)
+
+
+def ideas(request):
+    topic = request.POST['topic']
+    nature = request.POST['nature']
+    idea = Idea(topic, nature)
+    return render(request, 'essay/ideas.html', {
+        'topic': topic,  # pass the variable to html page
+        'nature': nature,
+        'question': idea.get_question()
+    })
