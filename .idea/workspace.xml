@@ -19,10 +19,22 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ce1e911b-d719-4690-9728-03d3ebb67168" name="Default Changelist" comment="process">
+    <list default="true" id="ce1e911b-d719-4690-9728-03d3ebb67168" name="Default Changelist" comment="modelling quesitons">
+      <change afterPath="$PROJECT_DIR$/essay/templates/essay/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alphawrite/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/alphawrite/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/essay/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/essay/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/essay/templates/essay/ideas.html" beforeDir="false" afterPath="$PROJECT_DIR$/essay/templates/essay/ideas.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/essay/templates/essay/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/essay/templates/essay/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/essay/templates/includes/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/essay/templates/includes/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/essay/templates/essay/notes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/essay/templates/essay/start.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/essay/templates/essay/thesis.html" beforeDir="false" afterPath="$PROJECT_DIR$/essay/templates/essay/thesis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/essay/templates/includes/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/essay/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/essay/templates/includes/footer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/essay/templates/includes/header.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/essay/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/essay/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/essay/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/essay/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,15 +55,17 @@
   <component name="ProjectId" id="1bpyFHBlDuIFrapeVt5IjObpK8o" />
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/essay/templates/essay" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/essay/templates" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/essay/templates/includes" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\jinlei\develop\python\alphawrite\essay\templates" />
+      <recent name="C:\Users\jinlei\develop\python\alphawrite\essay\templates\essay" />
       <recent name="$PROJECT_DIR$/essay/templates/essay" />
       <recent name="$PROJECT_DIR$/polls/templates/polls" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/essay/templates/includes" />
     </key>
   </component>
   <component name="RunManager">
@@ -138,7 +152,21 @@
       <option name="project" value="LOCAL" />
       <updated>1589935007682</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="remodeled">
+      <created>1590210751310</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1590210751310</updated>
+    </task>
+    <task id="LOCAL-00003" summary="modelling quesitons">
+      <created>1590211390640</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1590211390640</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -161,16 +189,22 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="process" />
-    <option name="LAST_COMMIT_MESSAGE" value="process" />
+    <MESSAGE value="remodeled" />
+    <MESSAGE value="modelling quesitons" />
+    <option name="LAST_COMMIT_MESSAGE" value="modelling quesitons" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1589935010477">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1590211392391">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1589935010477" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1590211392391" />
     <state x="769" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589934972341">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="769" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1589934972341" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1590206664704">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1590206664704" />
   </component>
 </project>

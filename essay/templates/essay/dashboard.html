@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% block style %}
+<style>
+html,body{
+   height:100%;
+   width:100%;
+}
+</style>
+{% endblock style%}
+{% block content %}
+<body class="bg-light">
+    <div class="container h-75">
+
+      <div class="mt-5 mb-4"><h5>{{ topic }}</h5></div>
+
+      <!-- test --->
+<ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#prewriting" role="tab" aria-selected="true"><i class="fas fa-seedling"></i> Ideas</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#thesis" role="tab" aria-controls="contact" aria-selected="false"><i class="fas fa-apple-alt"></i> Thesis</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#outline" role="tab" aria-controls="contact" aria-selected="false"><i class="fas fa-layer-group"></i> Outline</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#proofreading" role="tab" aria-controls="contact" aria-selected="false"><i class="fas fa-eye"></i> Proofreading</a>
+  </li>
+</ul>
+<div class="tab-content mt-5" id="myTabContent">
+  <div class="tab-pane fade show active" id="prewriting" role="tabpanel" aria-labelledby="prewriting-tab">
+
+    <div class="idea_questions mt-5">
+      <!-- continued questions for ideas -->
+      <!-- end of questions for ideas-->
+    </div>
+
+  </div>
+  <!-- thesis -->
+  <div class="tab-pane fade" id="thesis" role="tabpanel" aria-labelledby="thesis-tab">
+    <div class="container">
+      <p>A good thesis has two parts. It should tell what you plan to argue, and it should "telegraph" how you plan to argue—that is, what particular support for your claim is going where in your essay.</p>
+      <p>Type</p>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+        <label class="form-check-label" for="inlineCheckbox1">Analytical</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+        <label class="form-check-label" for="inlineCheckbox2">Expository</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+        <label class="form-check-label" for="inlineCheckbox3">Argumentative</label>
+      </div>
+    </div>
+
+    <div class="container">
+      <br>
+      <p>Specific</p>
+      <p>Position (end of the first paragraph)</p>
+      <p>Reflective</p>
+    </div>
+
+    <div class="container">Thesis Statement</div>
+    <ul>
+      <li>debatable</li>
+      <li>narrow</li>
+      <li>
+        types of claims:
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="claim_1" value="option1">
+          <label class="form-check-label" for="inlineCheckbox1">Claims of fact or definition</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="claim_2" value="option2">
+          <label class="form-check-label" for="inlineCheckbox2">Claims of cause and effect</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="claim_3" value="option3">
+          <label class="form-check-label" for="inlineCheckbox3">Claims about value</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="claim_4" value="option3">
+          <label class="form-check-label" for="inlineCheckbox3">Claims about solutions or policies</label>
+        </div>
+      </li>
+    </ul>
+
+    <div class="container">Research and Evidence</div>
+    <ul>
+      <li>research: first hand / second hand</li>
+      <li>
+        credibility checklist: author / how recent / author's purpose / type of source for your audience / internet
+      </li>
+    </ul>
+
+    <div class="container">Organizing your argument</div>
+    <ul>
+      <li>Toulmin</li>
+      <li>Rogerian</li>
+      <li>Classical</li>
+    </ul>
+
+    <div class="container">Rhetorical Strategies</div>
+    <ul>
+      <li>Logos</li>
+      <li>Ethos</li>
+      <li>Pathos</li>
+    </ul>
+
+  </div>
+  <!-- end of thesis -->
+  <div class="tab-pane fade" id="outline" role="tabpanel" aria-labelledby="outline-tab">
+    <div class="container">
+      <p>Parallelism</p>
+      <p>Coordination</p>
+      <p>Subordination</p>
+      <p>Division</p>
+
+    <div class="container">Essay Writing</div>
+    <ul>
+      <li>Expository</li>
+      <li>Descriptive</li>
+      <li>Narrative</li>
+      <li>Argumentative</li>
+    </ul>
+
+      <div class="printarea">
+
+<h2>Why and How to Create a Useful Outline</h2>
+<div class="alert alert-warning">
+<p><strong>Summary:</strong></p>
+<p>This resource describes why outlines are useful, what types of outlines exist, suggestions for developing effective outlines, and how outlines can be used as an invention strategy for writing.</p>
+</div>
+<p>Why create an outline? There are many reasons, but in general, it may be helpful to create an outline when you want to show the hierarchical relationship or logical ordering of information. For research papers, an outline may help you keep track of large amounts of information. For creative writing, an outline may help organize the various plot threads and help keep track of character traits. Many people find that organizing an oral report or presentation in outline form helps them speak more effectively in front of a crowd. Below are the primary reasons for creating an outline.</p>
+<ul>
+<li>Aids in the process of writing</li>
+<li>Helps you organize your ideas</li>
+<li>Presents your material in a logical form</li>
+<li>Shows the relationships among ideas in your writing</li>
+<li>Constructs an ordered overview of your writing</li>
+<li>Defines boundaries and groups</li>
+</ul>
+<p>How do I create an outline?</p>
+<ul>
+<li>Determine the purpose of your paper.</li>
+<li>Determine the audience you are writing for.</li>
+<li>Develop the thesis of your paper.</li>
+</ul>
+<p>Then:</p>
+<ul>
+<li><strong>Brainstorm</strong>: List all the ideas that you want to include in your paper.</li>
+<li><strong>Organize</strong>: Group related ideas together.</li>
+<li><strong>Order</strong>: Arrange material in subsections from general to specific or from abstract to concrete.</li>
+<li><strong>Label</strong>: Create main and sub headings.</li>
+</ul>
+<p>Remember: creating an outline before writing your paper will make organizing your thoughts a lot easier. Whether you follow the suggested guidelines is up to you, but making any kind of outline (even just some jotting down some main ideas) will be beneficial to your writing process.</p>
+</div>
+
+<div class="printarea">
+
+
+<h2>Reverse Outlining: An Exercise for Taking Notes and Revising Your Work</h2>
+<div class="alert alert-warning">
+<p><strong>Summary:</strong></p>
+<p>This exercise is useful for either difficult texts that you must read, or as a way to revise your work for organization and clarity.</p>
+</div>
+<p>Some assignments ask you to read and analyze complex information. In these cases, reverse outlining can help you distill the main ideas into short, clear statements. You may also use reverse outlining to revise your own work. Reverse outlining follows a two-step, repeatable process:</p>
+<ol>
+<li>In the <em>left-hand</em> margin, write down the topic of each paragraph. Try to use as few words as possible.
+<p>When reading, these notes should work as quick references for future study or in-class discussion.</p>
+<p>When revising your own work, these notes should tell you if each paragraph is focused and clear.</p>
+</li>
+<li>In the <em>right-hand</em> margin, write down how the paragraph topic advances the overall argument of the text. Again, be brief.
+<p>When reading, these notes allow you to follow the logic of the essay, making it easier for you to analyze or discuss later.</p>
+<p>When revising your own work, these notes should tell you if each paragraph fits in the overall organization of your paper. You may also notice that paragraphs should be shifted after completing this step.</p>
+</li>
+</ol>
+<p>Be brief, particularly when rereading your own work. If you can't complete each step in 5-10 words, the paragraph may need to be altered. You should be able to summarize the topic and the manner of support quickly; if you can't, revise the paragraph until you can.</p>
+<p>This exercise can be expanded into an actual outline by rewriting/typing your notes, but writing in the margin might be sufficient.</p>
+</div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="proofreading" role="tabpanel" aria-labelledby="proofreading-tab">
+    <h1>Switch from writer-centered to reader-centered.</h1>
+    <ul>
+    <li>Begin sentences with short, simple words and phrases.</li>
+    <li>These phrases should communicate information that appeared in previous sentences, or build on knowledge that you share with your reader.</li>
+    <li>Within a paragraph, keep your topics, or main points, direct and reasonably consistent.</li>
+    </ul>
+  </div>
+</div>
+      <!-- end of test -->
+
+</div>
+</body>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+$(function() {
+    var url = "{% url 'essay:ideas' %}";
+    $.ajax({
+      headers: { "X-CSRFToken": '{{csrf_token}}' },
+      method: "POST",
+      url: url,
+      data: {topic: "{{topic}}", nature: "person"},
+      success: function (data) {
+        $(".idea_questions").html(data);
+      }
+    });
+});
+</script>
+{% endblock javascript %}
+
+
+
+
+

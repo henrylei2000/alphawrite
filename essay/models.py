@@ -150,15 +150,30 @@ class Assignment:
 
 class Idea:
     questions = {
-        "object": ["How does the dictionary define {{topic}}?",],
-        "human":  ["What group of persons does {{topic}} belong to?",],
+        "object": [
+                    # definition
+                    "How does the dictionary define ____?",
+                    "What parts can ____ be divided into?",
+                    "How is ____ different from other things?",
+                   ],
+        "person":  [
+                    # cubing
+                    "Describe. ____ ",
+                    "Compare. ____ is similar to",
+                    "Associate. What does ____ make you think of",
+                    "Analyze. How ____ is made",
+                    "Apply. What can you do with ____",
+                    "Argue. For ____, or against ____",
+                    ],
     }
 
     def __init__(self, topic, nature):
         self.topic = topic
         self.nature = nature
 
-    def get_question(self):
+    def get_questions(self):
         qs = self.questions.get(self.nature)
-        q = qs[0]
-        return q.replace("{{topic}}", self.topic)
+        questions = []
+        for q in qs:
+            questions.append(q.replace("____", self.topic))
+        return questions

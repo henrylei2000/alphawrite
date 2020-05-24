@@ -1,85 +1,8 @@
 <body class="bg-light">
     <div class="container">
-
-    <div class="idea_questions">
-      <!-- continued questions for ideas -->
-      <p>Definition</p>
-<ul>
-<li>{{question}}</li>
-<li>What do I mean by ____?</li>
-<li>What group of things does ____ belong to?</li>
-<li>How is ____ different from other things?</li>
-<li>What parts can ____ be divided into?</li>
-<li>Does ____ mean something now that it didn't years ago? If so, what?</li>
-<li>What other words mean about the same as ____?</li>
-<li>What are some concrete examples of ____?</li>
-<li>When is the meaning of ____ misunderstood?</li>
-</ul>
-<p>Comparison/Contrast</p>
-<ul>
-<li>What is ____ similar to? In what ways?</li>
-<li>What is ____ different from? In what ways?</li>
-<li>____ is superior (inferior) to what? How?</li>
-<li>____ is most unlike (like) what? How?</li>
-</ul>
-<p>Relationship</p>
-<ul>
-<li>What causes ____?</li>
-<li>What are the effects of ____?</li>
-<li>What is the purpose of ____? - What is the consequence of ____?</li>
-<li>What comes before (after) ____?</li>
-</ul>
-<p>Testimony</p>
-<ul>
-<li>What have I heard people say about ____?</li>
-<li>What are some facts of statistics about ____?</li>
-<li>Can I quote any proverbs, poems, or sayings about ____?</li>
-<li>Are there any laws about ____?</li>
-</ul>
-<p>Circumstance</p>
-<ul>
-<li>Is ____ possible or impossible?</li>
-<li>What qualities, conditions, or circumstances make ____ possible or impossible?</li>
-<li>When did ____ happen previously?</li>
-<li>Who can do ____?</li>
-<li>If ____ starts, what makes it end?</li>
-<li>What would it take for ____ to happen now?</li>
-<li>What would prevent ___ from happening?</li>
-</ul>
-      <div class="idea_questions_human">
-<p>Tagmemics</p>
-<p>Contrastive features</p>
-<ul>
-<li>How is ____ different from things similar to it?</li>
-<li>How has ____ been different for me?</li>
-</ul>
-<p>Variation</p>
-<ul>
-<li>How much can ____ change and still be itself?</li>
-<li>How is ____ changing?</li>
-<li>How much does ____ change from day to day?</li>
-<li>What are the different varieties of ____?</li>
-</ul>
-<p>Distribution</p>
-<ul>
-<li>Where and when does ____ take place?</li>
-<li>What is the larger thing of which ___ is a part?</li>
-<li>What is the function of ____ in this larger thing?</li>
-</ul>
-      </div>
-<p>Cubing (considering a subject from six points of view)</p>
-<ol>
-<li>*Describe* it (colors, shapes, sizes, etc.)</li>
-<li>*Compare* it (What is it similar to?)</li>
-<li>*Associate* it (What does it make you think of?)</li>
-<li>*Analyze* it (Tell how it's made)</li>
-<li>*Apply* it (What can you do with it? How can it be used?)</li>
-<li>*Argue* for or against it</li>
-</ol>
-<p>Make an analogy</p>
-<p>Choose an activity from column A to explain it by describing it in terms of an activity from column B (or vice-versa).</p>
-      <!-- end of questions for ideas-->
-    </div>
+        {% for q in questions %}
+        <li>{{q}}</li>
+        {% endfor %}
     </div>
 </body>
 

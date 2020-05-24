@@ -1,4 +1,6 @@
 # ignore cache
-.idea
+.idea/*
 *.pyc
+essay/__pycache__/*
+alphawrite/__pycache__/*
 db.sqlite3

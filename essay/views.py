@@ -11,6 +11,13 @@ def index(request):
     return render(request, 'essay/index.html')
 
 
+def dashboard(request):
+    topic = request.POST['topic']
+    return render(request, 'essay/dashboard.html', {
+        'topic': topic
+    })
+
+
 def build(request):
     components = {
         "topic": request.POST['topic'],  # name in the web form
@@ -45,5 +52,5 @@ def ideas(request):
     return render(request, 'essay/ideas.html', {
         'topic': topic,  # pass the variable to html page
         'nature': nature,
-        'question': idea.get_question()
+        'questions': idea.get_questions()
     })
