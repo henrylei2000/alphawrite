@@ -5,6 +5,56 @@ html,body{
    height:100%;
    width:100%;
 }
+textarea {
+  width: 100%;
+  outline: none;
+  box-shadow:none !important;
+  border-width: 0 0 1px;
+  border-color: #007bff;
+}
+
+textarea:focus {
+  border-color: #28a745;
+}
+
+.form-group {
+  position:relative;
+
+  & + .form-group {
+    margin-top: 30px;
+  }
+}
+
+.form-label {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  color: #999;
+  background-color: #fff;
+  z-index: 10;
+  transition: transform 150ms ease-out, font-size 150ms ease-out;
+}
+
+.focused .form-label {
+  transform: translateY(-125%);
+  font-size: .75em;
+}
+
+.form-input {
+  position: relative;
+  padding: 12px 0px 5px 0;
+  width: 100%;
+  outline: 0;
+  transition: box-shadow 150ms ease-out;
+
+  &:focus {
+    box-shadow: 0 2px 0 0 blue;
+  }
+}
+
+.form-input.filled {
+  box-shadow: 0 2px 0 0 lightgreen;
+}
 </style>
 {% endblock style%}
 {% block content %}
@@ -30,12 +80,80 @@ html,body{
 </ul>
 <div class="tab-content mt-5" id="myTabContent">
   <div class="tab-pane fade show active" id="prewriting" role="tabpanel" aria-labelledby="prewriting-tab">
+      <div class="row d-flex justify-content-center">
+        <div class="col-sm-5 mb-5">
+          <div class="card">
+            <div class="card-header">
+              Facts about {{topic}}
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label" for="facts">What are the facts?</label>
+                <textarea id="facts" class="form-input mb-2" rows="1"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cause">How did it begin and what are the causes?</label>
+                <textarea id="cause" class="form-input mb-2" rows="1"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <div class="idea_questions mt-5">
-      <!-- continued questions for ideas -->
-      <!-- end of questions for ideas-->
-    </div>
+        <div class="col-sm-5 mb-5">
+          <div class="card">
+            <div class="card-header">
+              Definition of {{topic}}
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label" for="nature">What is the nature of the problem?</label>
+                <textarea id="nature" class="form-input mb-2" rows="1"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="analogy">What is the analogy of the problem?</label>
+                <textarea id="analogy" class="form-input mb-2" rows="1"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <div class="col-sm-5 mb-5">
+          <div class="card">
+            <div class="card-header">
+              Quality of {{topic}}
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label" for="quality">Is it good or bad?</label>
+                <textarea id="quality" class="form-input mb-2" rows="1"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="significance">How significant is the problem?</label>
+                <textarea id="significance" class="form-input mb-2" rows="1"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-5 mb-5">
+          <div class="card">
+            <div class="card-header">
+              Policy for {{topic}}
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label" for="understanding">What did I understand better about the problem?</label>
+                <textarea id="understanding" class="form-input mb-2" rows="1"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="conclusion">Could we agree upon any conclusion or action?</label>
+                <textarea id="conclusion" class="form-input mb-2" rows="1"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
   </div>
   <!-- thesis -->
   <div class="tab-pane fade" id="thesis" role="tabpanel" aria-labelledby="thesis-tab">
@@ -200,7 +318,9 @@ html,body{
 
 {% block javascript %}
 <script>
+/*
 $(function() {
+    alert("not here.");
     var url = "{% url 'essay:ideas' %}";
     $.ajax({
       headers: { "X-CSRFToken": '{{csrf_token}}' },
@@ -211,7 +331,35 @@ $(function() {
         $(".idea_questions").html(data);
       }
     });
+});*/
+
+$('textarea').focus(function(){
+  $(this).parents('.form-group').addClass('focused');
 });
+
+$('textarea').blur(function(){
+  var inputValue = $(this).val();
+  if ( inputValue == "" ) {
+    $(this).removeClass('filled');
+    $(this).parents('.form-group').removeClass('focused');
+  } else {
+    $(this).addClass('filled');
+  }
+})
+
+$('input').focus(function(){
+  $(this).parents('.form-group').addClass('focused');
+});
+
+$('input').blur(function(){
+  var inputValue = $(this).val();
+  if ( inputValue == "" ) {
+    $(this).removeClass('filled');
+    $(this).parents('.form-group').removeClass('focused');
+  } else {
+    $(this).addClass('filled');
+  }
+})
 </script>
 {% endblock javascript %}
 

@@ -157,22 +157,19 @@ class Idea:
                     "How is ____ different from other things?",
                    ],
         "person":  [
-                    # cubing
-                    "Describe. ____ ",
-                    "Compare. ____ is similar to",
-                    "Associate. What does ____ make you think of",
-                    "Analyze. How ____ is made",
-                    "Apply. What can you do with ____",
-                    "Argue. For ____, or against ____",
+                    # stasis
+                    "Facts about ____",
+                    "Definition of ____",
+                    "Quality of ____",
+                    "Policy for ____",
                     ],
     }
 
-    def __init__(self, topic, nature):
+    def __init__(self, topic):
         self.topic = topic
-        self.nature = nature
 
     def get_questions(self):
-        qs = self.questions.get(self.nature)
+        qs = self.questions.get("person")
         questions = []
         for q in qs:
             questions.append(q.replace("____", self.topic))

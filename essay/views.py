@@ -13,8 +13,11 @@ def index(request):
 
 def dashboard(request):
     topic = request.POST['topic']
+    idea = Idea(topic)
+
     return render(request, 'essay/dashboard.html', {
-        'topic': topic
+        'topic': topic,
+        'idea': idea
     })
 
 

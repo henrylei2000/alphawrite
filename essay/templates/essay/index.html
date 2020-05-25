@@ -9,22 +9,21 @@ html,body{
 
 {% block content %}
 <body class="bg-light">
-    <div class="container-fluid h-75">
-      <div class="row h-50 justify-content-center">
+  <div class="container-fluid h-75">
+    <div class="h-25"></div>
+    <div class="row h-25 justify-content-center">
+      <div class="form-group w-50">
         <form action="{% url 'essay:dashboard' %}" method="post" class="form-inline">
           {% csrf_token %}
-          <div class="form-group">
-            <label>Topic, prompt, or assignment</label>
-          </div>
-          <div class="form-group mx-sm-3">
-            <input type="text" class="form-control" name="topic" placeholder="">
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary">Go</button>
-          </div>
+        <input type="text" class="form-control col-sm-10" name="topic" placeholder="">
+        <div class="form-group col-sm-1">
+          <button type="submit" class="btn btn-primary">Go</button>
+        </div>
         </form>
+        <small>Topic, title, keywords, prompt, or assignment</small>
+      </div>
     </div>
-</div>
+  </div>
 </body>
 {% endblock content %}
 
