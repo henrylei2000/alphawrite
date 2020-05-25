@@ -81,77 +81,24 @@ textarea:focus {
 <div class="tab-content mt-5" id="myTabContent">
   <div class="tab-pane fade show active" id="prewriting" role="tabpanel" aria-labelledby="prewriting-tab">
       <div class="row d-flex justify-content-center">
-        <div class="col-sm-5 mb-5">
-          <div class="card">
-            <div class="card-header">
-              Facts about {{topic}}
-            </div>
-            <div class="card-body">
-              <div class="form-group">
-                <label class="form-label" for="facts">What are the facts?</label>
-                <textarea id="facts" class="ideas form-input mb-2" rows="1"></textarea>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="cause">How did it begin and what are the causes?</label>
-                <textarea id="cause" class="ideas form-input mb-2" rows="1"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
 
+        {% for key, values in idea.get_questions.items %}
         <div class="col-sm-5 mb-5">
           <div class="card">
             <div class="card-header">
-              Definition of {{topic}}
+              {{key}} / {{topic}}
             </div>
             <div class="card-body">
-              <div class="form-group">
-                <label class="form-label" for="nature">What is the nature of the problem?</label>
-                <textarea id="nature" class="form-input mb-2" rows="1"></textarea>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="analogy">Give an analogy of the problem.</label>
-                <textarea id="analogy" class="form-input mb-2" rows="1"></textarea>
-              </div>
+              {% for q in values %}
+                <div class="form-group">
+                  <label class="form-label" for="{{key}}-{{ forloop.counter }}">{{q}}</label>
+                  <textarea id="{{key}}-{{ forloop.counter }}" class="ideas form-input mb-2" rows="1"></textarea>
+                </div>
+              {% endfor %}
             </div>
           </div>
         </div>
-
-        <div class="col-sm-5 mb-5">
-          <div class="card">
-            <div class="card-header">
-              Quality of {{topic}}
-            </div>
-            <div class="card-body">
-              <div class="form-group">
-                <label class="form-label" for="quality">Is it good or bad?</label>
-                <textarea id="quality" class="form-input mb-2" rows="1"></textarea>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="significance">How significant is the problem?</label>
-                <textarea id="significance" class="form-input mb-2" rows="1"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-5 mb-5">
-          <div class="card">
-            <div class="card-header">
-              Policy for {{topic}}
-            </div>
-            <div class="card-body">
-              <div class="form-group">
-                <label class="form-label" for="understanding">Should action be taken?</label>
-                <textarea id="understanding" class="form-input mb-2" rows="1"></textarea>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="conclusion">What conclusion could be drawn?</label>
-                <textarea id="conclusion" class="form-input mb-2" rows="1"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
 
       </div>
   </div>

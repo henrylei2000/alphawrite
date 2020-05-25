@@ -19,7 +19,7 @@ class Thesis:
 
     def build(self):
         return "Even though %s, %s because %s and %s." % (
-        self.counterargument, self.opinion, self.argument_2, self.argument_1)
+            self.counterargument, self.opinion, self.argument_2, self.argument_1)
 
 
 class Outline:
@@ -150,27 +150,21 @@ class Assignment:
 
 class Idea:
     questions = {
-        "object": [
-                    # definition
-                    "How does the dictionary define ____?",
-                    "What parts can ____ be divided into?",
-                    "How is ____ different from other things?",
-                   ],
-        "person":  [
-                    # stasis
-                    "Facts about ____",
-                    "Definition of ____",
-                    "Quality of ____",
-                    "Policy for ____",
+        "fact": ["What are the facts?",
+                 "How did it begin and what are the causes?",
+                 ],
+        "definition": ["What is the nature of the problem?",
+                       "Give an analogy of the problem.",
+                       ],
+        "quality": ["Is it good or bad?",
+                    "How significant is the problem?",
                     ],
+        "policy": ["Should action be taken?",
+                   "What conclusion could be drawn?"],
     }
 
     def __init__(self, topic):
         self.topic = topic
 
     def get_questions(self):
-        qs = self.questions.get("person")
-        questions = []
-        for q in qs:
-            questions.append(q.replace("____", self.topic))
-        return questions
+        return self.questions
