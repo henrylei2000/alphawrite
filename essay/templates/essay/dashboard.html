@@ -60,14 +60,13 @@ textarea:focus {
 {% block content %}
 <body class="bg-light">
   <div class="container h-75">
-    <div class="mt-5 mb-4"><h5>{{ topic }}</h5></div>
-
+    <div class="mt-5 mb-4"><h5 class="debug">{{ topic }}</h5></div>
     <ul class="nav nav-tabs nav-pills" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#prewriting" role="tab" aria-selected="true"><i class="fas fa-seedling"></i> Ideas</a>
+        <a class="nav-link active" data-toggle="tab" href="#ideas" role="tab" aria-selected="true"><i class="fas fa-seedling"></i> Ideas</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#thesis" role="tab" aria-controls="contact" aria-selected="false"><i class="fas fa-apple-alt"></i> Thesis</a>
+        <a class="nav-link disabled" data-toggle="tab" href="#thesis" role="tab" aria-controls="contact" aria-selected="false"><i class="fas fa-apple-alt"></i> Thesis</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#outline" role="tab" aria-controls="contact" aria-selected="false"><i class="fas fa-layer-group"></i> Outline</a>
@@ -78,11 +77,11 @@ textarea:focus {
     </ul>
     <div class="tab-content mt-5">
       <!-- ideas -->
-      <div class="tab-pane fade show active" id="prewriting" role="tabpanel" aria-labelledby="prewriting-tab">
+      <div class="tab-pane fade show active" id="ideas" role="tabpanel" aria-labelledby="ideas-tab">
           <div class="row d-flex justify-content-center">
             {% for key, values in idea.get_questions.items %}
             <div class="col-sm-5 mb-5">
-              <div class="card">
+              <div class="card border-primary">
                 <div class="card-header">
                   {{key|capfirst}} / {{topic}}
                 </div>
@@ -103,10 +102,39 @@ textarea:focus {
 
       <!-- thesis -->
       <div class="tab-pane fade" id="thesis" role="tabpanel" aria-labelledby="thesis-tab">
-        <div class="container">
-          <h4 class="text-secondary"><i class="fas fa-tools"></i> ...</h4>
-          <p id="from_ideas"></p>
-        </div>
+
+<div class="container">
+  <div class="row">
+    {% for i in "123" %}
+    <div class="col">
+      <div class="form-group">
+        <label class="form-label" for="evidence-{{i}}">Evidence {{i}}</label>
+        <textarea id="evidence-{{i}}" class="thesis form-input" rows="2"></textarea>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="row">
+    {% for i in "123" %}
+    <div class="col">
+      <div class="form-group">
+        <label class="form-label" for="claim-{{i}}">Claim {{i}}</label>
+        <textarea id="claim-{{i}}" class="thesis form-input" rows="1"></textarea>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="row justify-content-md-center">
+    <div class="col col-lg-8">
+      <div class="form-group">
+        <label class="form-label" for="argument">Main Claim</label>
+        <textarea id="argument" class="thesis form-input" rows="1"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+
       </div>
       <!-- end of thesis -->
 
@@ -131,7 +159,6 @@ textarea:focus {
 
 {% block javascript %}
 <script>
-
 $('textarea').focus(function(){
   $(this).parents('.form-group').addClass('focused');
 });
@@ -160,12 +187,6 @@ $('input').blur(function(){
   }
 })
 
-
-$('.ideas').keyup(debounce(function(){
-        var $this=$(this);
-        $("#from_ideas").html($this.val());
-    },1000));
-
 function debounce(func, wait, immediate) {
     var timeout;
     return function() {
@@ -180,6 +201,61 @@ function debounce(func, wait, immediate) {
         if (callNow) func.apply(context, args);
     };
 };
+
+
+function ideas() {
+  $('.ideas').keyup(debounce(function(){
+      $("#argument").html($(this).val());
+  },1000));
+}
+
+function thesis() {
+  if ($("#argument").val().length > 0) {
+    $('#argument').focus();
+    $('#argument').blur();
+  }
+}
+
+$(function() {
+  $('.nav-tabs a').on('shown.bs.tab', function(e){
+    var url = "{% url 'essay:build' %}";
+    $.ajax({
+      headers: { "X-CSRFToken": '{{csrf_token}}' },
+      method: "POST",
+      url: url,
+      data: {
+        fact1: $.trim($('#fact-1').val()),
+        fact2: $.trim($('#fact-2').val()),
+        definition1: $.trim($('#definition-1').val()),
+        definition2: $.trim($('#definition-2').val()),
+        quality1: $.trim($('#quality-1').val()),
+        quality2: $.trim($('#quality-2').val()),
+        policy1: $.trim($('#policy-1').val()),
+        policy2: $.trim($('#policy-2').val()),
+      },
+      success: function (data) {
+        if (data['argument'].length > 0) {
+          $('#argument').focus();
+          $('#argument').html(data['argument']);
+          $('#argument').blur();
+        }
+        if (data['significance'].length > 0) {
+          $('#significance').focus()
+        }
+        $('#evidence-1').focus();
+        $('#evidence-1').html(data['evidence'][0]);
+        $('#evidence-1').blur();
+        $('#evidence-2').focus();
+        $('#evidence-2').html(data['evidence'][1]);
+        $('#evidence-2').blur();
+        $('#evidence-3').focus();
+        $('#evidence-3').html(data['evidence'][2]);
+        $('#evidence-3').blur();
+      }
+    });
+  });
+
+});
 </script>
 {% endblock javascript %}
 

@@ -150,17 +150,17 @@ class Assignment:
 
 class Idea:
     questions = {
-        "fact": ["What are the facts?",
+        "fact": ["What is the problem?",
                  "How did it begin and what are the causes?",
                  ],
-        "definition": ["What is the nature of the problem?",
-                       "Give an analogy of the problem.",
+        "definition": ["To what larger class of things or events does it belong?",
+                       "What are its parts, and how are they related?",
                        ],
-        "quality": ["Is it good or bad?",
-                    "How significant is the problem?",
+        "quality": ["What is the impact of this problem?",
+                    "Is there positive impact of this issue?",
                     ],
-        "policy": ["Should action be taken?",
-                   "What conclusion could be drawn?"],
+        "policy": ["Opinion about this issue?",
+                   "Who disagrees with you?"],
     }
 
     def __init__(self, topic):
