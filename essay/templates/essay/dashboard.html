@@ -5,31 +5,32 @@ html,body{
    height:100%;
    width:100%;
 }
+
 textarea {
   width: 100%;
   outline: none;
-  box-shadow:none !important;
+  resize: none;
+  overflow: hidden;
   border-width: 0 0 1px;
   border-color: #007bff;
 }
 
 textarea:focus {
-  border-color: #28a745;
+  border-color: #d9534f;
 }
 
 .form-group {
   position:relative;
-
   & + .form-group {
-    margin-top: 30px;
+    margin-top: 10px;
   }
 }
 
 .form-label {
   position: absolute;
   left: 0;
-  top: 10px;
-  color: #999;
+  top: 5px;
+  color: #007bff;
   background-color: #fff;
   z-index: 10;
   transition: transform 150ms ease-out, font-size 150ms ease-out;
@@ -38,23 +39,21 @@ textarea:focus {
 .focused .form-label {
   transform: translateY(-125%);
   font-size: .75em;
+  color: #d9534f;
 }
 
 .form-input {
-  position: relative;
-  padding: 12px 0px 5px 0;
-  width: 100%;
-  outline: 0;
-  transition: box-shadow 150ms ease-out;
+  padding: 0;
+}
 
-  &:focus {
-    box-shadow: 0 2px 0 0 blue;
-  }
+.form-label.filled {
+  color: #28a745;
 }
 
 .form-input.filled {
-  box-shadow: 0 2px 0 0 lightgreen;
+  border-color: #28a745;
 }
+
 </style>
 {% endblock style%}
 {% block content %}
@@ -83,7 +82,7 @@ textarea:focus {
             <div class="col-sm-5 mb-5">
               <div class="card border-primary">
                 <div class="card-header">
-                  {{key|capfirst}} / {{topic}}
+                  {{key|capfirst}} : {{topic}}
                 </div>
                 <div class="card-body">
                   {% for question in values %}
@@ -93,6 +92,7 @@ textarea:focus {
                     </div>
                   {% endfor %}
                 </div>
+
               </div>
             </div>
             {% endfor %}
@@ -109,7 +109,7 @@ textarea:focus {
     <div class="col">
       <div class="form-group">
         <label class="form-label" for="evidence-{{i}}">Evidence {{i}}</label>
-        <textarea id="evidence-{{i}}" class="thesis form-input" rows="2"></textarea>
+        <textarea id="evidence-{{i}}" class="thesis form-input" rows="1"></textarea>
       </div>
     </div>
     {% endfor %}
@@ -159,33 +159,6 @@ textarea:focus {
 
 {% block javascript %}
 <script>
-$('textarea').focus(function(){
-  $(this).parents('.form-group').addClass('focused');
-});
-
-$('textarea').blur(function(){
-  var inputValue = $(this).val();
-  if ( inputValue == "" ) {
-    $(this).removeClass('filled');
-    $(this).parents('.form-group').removeClass('focused');
-  } else {
-    $(this).addClass('filled');
-  }
-})
-
-$('input').focus(function(){
-  $(this).parents('.form-group').addClass('focused');
-});
-
-$('input').blur(function(){
-  var inputValue = $(this).val();
-  if ( inputValue == "" ) {
-    $(this).removeClass('filled');
-    $(this).parents('.form-group').removeClass('focused');
-  } else {
-    $(this).addClass('filled');
-  }
-})
 
 function debounce(func, wait, immediate) {
     var timeout;
@@ -202,21 +175,28 @@ function debounce(func, wait, immediate) {
     };
 };
 
-
-function ideas() {
-  $('.ideas').keyup(debounce(function(){
-      $("#argument").html($(this).val());
-  },1000));
-}
-
-function thesis() {
-  if ($("#argument").val().length > 0) {
-    $('#argument').focus();
-    $('#argument').blur();
-  }
-}
-
 $(function() {
+
+  $('textarea').focus(function(){
+    $(this).parents('.form-group').addClass('focused');
+  });
+
+  $('textarea').blur(function(){
+    var inputValue = $(this).val();
+    if ( inputValue == "" ) {
+      $(this).removeClass("filled");
+      $(this).parents('.form-group').removeClass('focused');
+    } else {
+      $(this).siblings('.form-label').addClass('filled');
+      $(this).addClass("filled");
+    }
+  })
+
+  $('.ideas, .thesis').on('change drop keydown cut paste show', function() {
+      $(this).height('auto');
+      $(this).height($(this).prop('scrollHeight'));
+  });
+
   $('.nav-tabs a').on('shown.bs.tab', function(e){
     var url = "{% url 'essay:build' %}";
     $.ajax({
@@ -239,17 +219,15 @@ $(function() {
           $('#argument').html(data['argument']);
           $('#argument').blur();
         }
-        if (data['significance'].length > 0) {
-          $('#significance').focus()
-        }
         $('#evidence-1').focus();
-        $('#evidence-1').html(data['evidence'][0]);
+        $('#evidence-1').html(data['evidences'][0]);
         $('#evidence-1').blur();
+
         $('#evidence-2').focus();
-        $('#evidence-2').html(data['evidence'][1]);
+        $('#evidence-2').html(data['evidences'][1]);
         $('#evidence-2').blur();
         $('#evidence-3').focus();
-        $('#evidence-3').html(data['evidence'][2]);
+        $('#evidence-3').html(data['evidences'][2]);
         $('#evidence-3').blur();
       }
     });

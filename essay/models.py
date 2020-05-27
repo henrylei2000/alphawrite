@@ -6,20 +6,54 @@ from random import *
 
 
 class Thesis:
-    def __init__(self, components):
-        self.topic = components.get("topic", "")
-        self.counterargument = components.get("counterargument", "")
-        self.opinion = components.get("opinion", "")
-        self.argument_1 = components.get("argument_1", "")
-        self.argument_2 = components.get("argument_2", "")
-        self.title = components.get("title", "")
+    def __init__(self, ideas):
+        self.ideas = ideas
 
     def __str__(self):
         return self.build()
 
     def build(self):
-        return "Even though %s, %s because %s and %s." % (
-            self.counterargument, self.opinion, self.argument_2, self.argument_1)
+
+        # build evidences
+        evidences = []
+        fact1 = self.ideas.get("fact1", "")
+        fact2 = self.ideas.get("fact2", "")
+        e = ""
+        if fact1 and fact2:
+            e = "Because of %s, %s" % (fact2, fact1)
+        elif fact1:
+            e = fact1
+        elif fact2:
+            e = fact2
+        evidences += [e]
+
+        definition1 = self.ideas.get("definition1", "")
+        definition2 = self.ideas.get("definition2", "")
+        e = ""
+        if definition1 and definition2:
+            e = "On one hand, %s. On the other hand, %s" % (definition2, definition1)
+        elif definition1:
+            e = definition1
+        elif definition2:
+            e = definition2
+        evidences += [e]
+
+        quality1 = self.ideas.get("quality1", "")
+        quality2 = self.ideas.get("quality2", "")
+        e = ""
+        if quality2:
+            e = quality2
+        evidences += [e]
+
+        policy1 = self.ideas.get("policy1", "")
+        policy2 = self.ideas.get("policy2", "")
+        argument = ""
+        if policy1 and policy2:
+            argument = "Even though %s may disagree, %s" % (policy2, policy1)
+        elif policy1:
+            argument = policy1
+
+        return {'argument': argument, 'evidences': evidences}
 
 
 class Outline:
@@ -153,10 +187,10 @@ class Idea:
         "fact": ["What is the problem?",
                  "How did it begin and what are the causes?",
                  ],
-        "definition": ["To what larger class of things or events does it belong?",
+        "definition": ["To what larger class of things does it belong?",
                        "What are its parts, and how are they related?",
                        ],
-        "quality": ["What is the impact of this problem?",
+        "quality": ["What is the damage of this problem?",
                     "Is there positive impact of this issue?",
                     ],
         "policy": ["Opinion about this issue?",
