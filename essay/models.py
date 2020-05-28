@@ -219,11 +219,6 @@ class Idea:
         "Any disagreement about {OBJ}?",
         ]
 
-    tests = [
-        "test",
-        "thisisatest",
-    ]
-
     def __init__(self, topic):
         self.topic = topic
         self.subject = ""
@@ -232,7 +227,19 @@ class Idea:
         self.entities = []
         self.processed = False
 
-    def is_test(self):
+    def blocked(self):
+        if '</script>' in self.topic:
+            return True
+
+        blacklist = [
+            "test",
+            "thisisatest",
+            "whatsup",
+        ]
+        topic = ''.join(e for e in self.topic if e.isalnum()).lower()
+        if topic.isdigit() or topic in blacklist or len(topic) < 2:
+            return True
+
         if not self.processed:
             self.process()
         if not self.subject and not self.object and not len(self.entities):

@@ -16,7 +16,7 @@ def dashboard(request):
     topic = request.POST['topic']
     idea = Idea(topic)
 
-    if idea.is_test():
+    if idea.blocked():
         return render(request, 'essay/index.html', {'idea': idea})
     else:
         return render(request, 'essay/dashboard.html', {
