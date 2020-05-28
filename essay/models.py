@@ -228,14 +228,19 @@ class Idea:
         self.verb = ""
         self.object = ""
         self.entities = []
+        self.processed = False
 
     def is_test(self):
-        self.process()
+        if not self.processed:
+            self.process()
         if not self.subject and not self.object and not len(self.entities):
             return True
         return False
 
     def process(self):
+        if self.processed:
+            return self
+
         nlp = spacy.load('en_core_web_sm')
         doc = nlp(self.topic)
         sentence = next(doc.sents)
@@ -266,6 +271,7 @@ class Idea:
             if ent.label_ == 'PERSON' or ent.label_ == 'ORG' or ent.label_ == 'EVENT' or ent.label_ == 'GPE':
                 self.entities.append(ent.text)
 
+        self.processed = True
         return self
 
     def generate_questions(self):
@@ -283,11 +289,10 @@ class Idea:
             ents = self.entities[0]
             if num_ents == 2:
                 ents += " and " + self.entities[1]
-            else:  # 3 and more
-                for i in range(1, len(self.entities) - 1):
+            elif num_ents > 2:  # 3 and more
+                for i in range(1, num_ents - 1):
                     ents += ", " + self.entities[i]
-
-                ents += ", and " + self.entities[len(self.entities) - 1]
+                ents += ", and " + self.entities[num_ents - 1]
 
             q_fact = []
             for q in self.q_fact:
