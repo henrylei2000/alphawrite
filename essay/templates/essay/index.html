@@ -23,6 +23,11 @@ html,body{
         <small>Topic, title, keywords, prompt, or assignment</small>
       </div>
     </div>
+    {% if idea %}
+      <div class="row justify-content-center">You: {{idea.topic}}<span class="ml-2 text-success"><i class="fas fa-smile-wink"></i></span></div>
+      <div class="row justify-content-center">Me: you kiddin' me?<span class="ml-2 text-danger"><i class="fas fa-meh-rolling-eyes"></i></span></div>
+    {% endif %}
+
   </div>
 </body>
 {% endblock content %}
@@ -32,7 +37,7 @@ html,body{
 $(function() {
   $('button').click(function (e) {
     e.preventDefault();
-    if ($('#topic').val().length > 0) $('form').submit();
+    if ($.trim($('#topic').val()).length > 0) $('form').submit();
   });
 });
 </script>

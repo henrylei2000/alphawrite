@@ -186,21 +186,22 @@ $(function() {
     if ( inputValue == "" ) {
       $(this).removeClass("filled");
       $(this).parents('.form-group').removeClass('focused');
+      $(this).siblings('.form-label').removeClass('filled');
     } else {
       $(this).siblings('.form-label').addClass('filled');
       $(this).addClass("filled");
     }
   })
 
-  $('.ideas, .thesis').on('change drop keydown cut paste show', function() {
-      $(this).height('auto');
-      $(this).height($(this).prop('scrollHeight'));
+  $('.ideas, .thesis').on('keypress keyup change click drop keydown cut paste', function() {
+    $(this).height('auto');
+    $(this).height($(this).prop('scrollHeight'));
   });
 
   $('.nav-tabs a').on('shown.bs.tab', function(e){
     var url = "{% url 'essay:build' %}";
     $.ajax({
-      headers: { "X-CSRFToken": '{{csrf_token}}' },
+      headers: {'X-CSRFToken': '{{csrf_token}}'},
       method: "POST",
       url: url,
       data: {
@@ -216,19 +217,16 @@ $(function() {
       success: function (data) {
         if (data['argument'].length > 0) {
           $('#argument').focus();
-          $('#argument').html(data['argument']);
+          $('#argument').val(data['argument']);
           $('#argument').blur();
         }
-        $('#evidence-1').focus();
-        $('#evidence-1').html(data['evidences'][0]);
-        $('#evidence-1').blur();
-
-        $('#evidence-2').focus();
-        $('#evidence-2').html(data['evidences'][1]);
-        $('#evidence-2').blur();
-        $('#evidence-3').focus();
-        $('#evidence-3').html(data['evidences'][2]);
-        $('#evidence-3').blur();
+        var i;
+        for (i = 0; i < data['evidences'].length; i++) {
+          $('#evidence-' + String(i + 1)).focus();
+          $('#evidence-' + String(i + 1)).val(data['evidences'][i]);
+          $('#evidence-' + String(i + 1)).click();
+          $('#evidence-' + String(i + 1)).blur();
+        }
       }
     });
   });

@@ -20,7 +20,7 @@ class Thesis:
         fact2 = self.ideas.get("fact2", "")
         e = ""
         if fact1 and fact2:
-            e = "Because of %s, %s" % (fact2, fact1)
+            e = "Because %s, %s" % (fact2, fact1)
         elif fact1:
             e = fact1
         elif fact2:
@@ -197,8 +197,27 @@ class Idea:
                    "Who disagrees with you?"],
     }
 
+    tests = [
+        "test",
+        "thisisatest",
+        "abc",
+        "aaa",
+        "aaaa",
+        "aaaaa",
+        "ffff",
+        "fff",
+        "ff"
+    ]
+
     def __init__(self, topic):
         self.topic = topic
+
+    def is_test(self):
+        topic = ''.join(e for e in self.topic if e.isalnum()).lower()
+        if topic.isdigit() or topic in self.tests or len(topic) < 2:
+            return True
+        else:
+            return False
 
     def get_questions(self):
         return self.questions

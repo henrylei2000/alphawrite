@@ -16,10 +16,13 @@ def dashboard(request):
     topic = request.POST['topic']
     idea = Idea(topic)
 
-    return render(request, 'essay/dashboard.html', {
-        'topic': topic,
-        'idea': idea
-    })
+    if idea.is_test():
+        return render(request, 'essay/index.html', {'idea': idea})
+    else:
+        return render(request, 'essay/dashboard.html', {
+            'topic': topic,
+            'idea': idea
+        })
 
 
 def build(request):
