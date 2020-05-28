@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from random import *
+import spacy
 
 
 class Thesis:
@@ -183,41 +184,147 @@ class Assignment:
 
 
 class Idea:
-    questions = {
-        "fact": ["What is the problem?",
-                 "How did it begin and what are the causes?",
-                 ],
-        "definition": ["To what larger class of things does it belong?",
-                       "What are its parts, and how are they related?",
-                       ],
-        "quality": ["What is the damage of this problem?",
-                    "Is there positive impact of this issue?",
-                    ],
-        "policy": ["Opinion about this issue?",
-                   "Who disagrees with you?"],
-    }
+
+    q_fact = [
+        "What is the problem?",
+        "How did it begin and what are the causes?",
+        "What happened with {ENTS}?",
+        "Any known opinion about {ENTS}?",
+        "List facts about {SUBJ}.",
+        "Any knowledge about {SUBJ} in the topic?"]
+
+    q_definition = [
+        "To what larger class of things does it belong?",
+        "What are its parts, and how are they related?",
+        "What is the nature of {SUBJ}?",
+        "What are components of {SUBJ}?"]
+
+    q_quality = [
+        "What is the damage of this problem?",
+        "Is there positive impact of this issue?",
+        "What role did {SUBJ} play, good or bad?",
+        "What makes {SUBJ} significant?",
+        "Does it make sense to discuss {OBJ}?",
+        "What's the measurement of {OBJ}?",
+        ]
+
+    q_policy = [
+        "Opinion about this topic?",
+        "Who disagrees with you?",
+        "Opinion about {SUBJ} in the topic?",
+        "Any disagreement about {SUBJ}?",
+        "Opinion about {OBJ} in the topic?",
+        "Any disagreement about {OBJ}?",
+        ]
 
     tests = [
         "test",
         "thisisatest",
-        "abc",
-        "aaa",
-        "aaaa",
-        "aaaaa",
-        "ffff",
-        "fff",
-        "ff"
     ]
 
     def __init__(self, topic):
         self.topic = topic
+        self.subject = ""
+        self.verb = ""
+        self.object = ""
+        self.entities = []
 
     def is_test(self):
-        topic = ''.join(e for e in self.topic if e.isalnum()).lower()
-        if topic.isdigit() or topic in self.tests or len(topic) < 2:
+        self.process()
+        if not self.subject and not self.object and not len(self.entities):
             return True
-        else:
-            return False
+        return False
 
-    def get_questions(self):
-        return self.questions
+    def process(self):
+        nlp = spacy.load('en_core_web_sm')
+        doc = nlp(self.topic)
+        sentence = next(doc.sents)
+        for word in sentence:
+            if word.dep_ == 'nsubj':
+                self.subject = word.text
+            if word.dep_ == 'dobj' or word.dep_ == 'obj':
+                self.object = word.text
+            if word.dep_ == 'ROOT':
+                if word.pos_ == 'VERB':
+                    self.verb = word.text.lower()
+                if word.pos_ == 'NOUN' and not self.subject:
+                    self.subject = word.text.lower()
+
+        if self.subject:
+            for chunk in doc.noun_chunks:
+                if self.subject in chunk.text:
+                    self.subject = chunk.text
+                    break
+
+        if self.object:
+            for chunk in doc.noun_chunks:
+                if self.object in chunk.text:
+                    self.object = chunk.text
+                    break
+
+        for ent in doc.ents:
+            if ent.label_ == 'PERSON' or ent.label_ == 'ORG' or ent.label_ == 'EVENT' or ent.label_ == 'GPE':
+                self.entities.append(ent.text)
+
+        return self
+
+    def generate_questions(self):
+        questions = {"fact": self.q_fact, "definition": self.q_definition, "quality": self.q_quality, "policy": self.q_policy}
+        q_fact = self.q_fact[:2]
+
+        if self.subject:
+            q_fact = []
+            for q in self.q_fact:
+                if '{SUBJ}' in q:
+                    q_fact.append(q.replace('{SUBJ}', self.subject))
+
+        num_ents = len(self.entities)
+        if num_ents:
+            ents = self.entities[0]
+            if num_ents == 2:
+                ents += " and " + self.entities[1]
+            else:  # 3 and more
+                for i in range(1, len(self.entities) - 1):
+                    ents += ", " + self.entities[i]
+
+                ents += ", and " + self.entities[len(self.entities) - 1]
+
+            q_fact = []
+            for q in self.q_fact:
+                if '{ENTS}' in q:
+                    q_fact.append(q.replace('{ENTS}', ents))
+
+        q_definition = self.q_definition[:2]
+        if self.subject:
+            q_definition = []
+            for q in self.q_definition:
+                if '{SUBJ}' in q:
+                    q_definition.append(q.replace('{SUBJ}', self.subject))
+
+        q_quality = self.q_quality[:2]
+        if self.subject:
+            q_quality = []
+            for q in self.q_quality:
+                if '{SUBJ}' in q:
+                    q_quality.append(q.replace('{SUBJ}', self.subject))
+        elif self.object:
+            q_quality = []
+            for q in self.q_quality:
+                if '{OBJ}' in q:
+                    q_quality.append(q.replace('{OBJ}', self.object))
+
+        q_policy = self.q_policy[:2]
+        if self.subject:
+            q_policy = []
+            for q in self.q_policy:
+                if '{SUBJ}' in q:
+                    q_policy.append(q.replace('{SUBJ}', self.subject))
+        elif self.object:
+            q_policy = []
+            for q in self.q_policy:
+                if '{OBJ}' in q:
+                    q_policy.append(q.replace('{OBJ}', self.object))
+
+        questions = {"fact": q_fact, "definition": q_definition, "quality": q_quality, "policy": q_policy}
+
+        return questions
