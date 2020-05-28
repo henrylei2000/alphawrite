@@ -197,7 +197,9 @@ class Idea:
         "To what larger class of things does it belong?",
         "What are its parts, and how are they related?",
         "What is the nature of {SUBJ}?",
-        "What are components of {SUBJ}?"]
+        "What are components of {SUBJ}?",
+        "What are similar concepts for {OBJ}?",
+        "What are aspects of {OBJ}?"]
 
     q_quality = [
         "What is the damage of this problem?",
@@ -305,6 +307,11 @@ class Idea:
             for q in self.q_definition:
                 if '{SUBJ}' in q:
                     q_definition.append(q.replace('{SUBJ}', self.subject))
+        elif self.object:
+            q_definition = []
+            for q in self.q_definition:
+                if '{OBJ}' in q:
+                    q_definition.append(q.replace('{OBJ}', self.object))
 
         q_quality = self.q_quality[:2]
         if self.subject:
