@@ -17,42 +17,19 @@ class Thesis:
 
         # build evidences
         evidences = []
-        fact1 = self.ideas.get("fact1", "")
-        fact2 = self.ideas.get("fact2", "")
-        e = ""
-        if fact1 and fact2:
-            e = "Because %s, %s" % (fact2, fact1)
-        elif fact1:
-            e = fact1
-        elif fact2:
-            e = fact2
-        evidences += [e]
+        fact = self.ideas.get("fact", "")
+        evidences += [fact]
 
-        definition1 = self.ideas.get("definition1", "")
-        definition2 = self.ideas.get("definition2", "")
-        e = ""
-        if definition1 and definition2:
-            e = "On one hand, %s. On the other hand, %s" % (definition2, definition1)
-        elif definition1:
-            e = definition1
-        elif definition2:
-            e = definition2
-        evidences += [e]
+        definition = self.ideas.get("definition", "")
+        evidences += [definition]
 
-        quality1 = self.ideas.get("quality1", "")
-        quality2 = self.ideas.get("quality2", "")
-        e = ""
-        if quality2:
-            e = quality2
-        evidences += [e]
+        quality = self.ideas.get("quality", "")
+        counterpoint = self.ideas.get("counterpoint", "")
+        evidences += [counterpoint]
 
-        policy1 = self.ideas.get("policy1", "")
-        policy2 = self.ideas.get("policy2", "")
-        argument = ""
-        if policy1 and policy2:
-            argument = "Even though %s may disagree, %s" % (policy2, policy1)
-        elif policy1:
-            argument = policy1
+        policy = self.ideas.get("policy", "")
+
+        argument = policy + " " + quality
 
         return {'argument': argument, 'evidences': evidences}
 
@@ -186,40 +163,37 @@ class Assignment:
 class Idea:
     questions = [
         # Facts
-        "{F1}What is the problem?",
-        "{F2}How did it begin and what are the causes?",
-        "{F1}What happened to {ENTS}?",
-        "{F2}What is the story behind {ENTS}?",
-        "{F1}What do we know about {SUBJ}.",
-        "{F2}Any knowledge about {SUBJ}?",
-        "{F1}What do we know about {SUBJ} and {OBJ}.",
-        "{F2}Any knowledge about {SUBJ} and \"{OBJ}\"?",
+        "{F}How did it begin and what are the causes?",
+        "{F}What happened to {ENTS}?",
+        "{F}What is the story behind {ENTS}?",
+        "{F}What do we know about \"{SUBJ}\".",
+        "{F}Any knowledge about \"{SUBJ}\"?",
+        "{F}What do we know about {SUBJ} and {OBJ}.",
+        "{F}Any knowledge about {SUBJ} and \"{OBJ}\"?",
 
         # Definition
-        "{D1}To what larger class of things does it belong?",
-        "{D2}What are its parts, and how are they related?",
-        "{D1}What is the nature of {SUBJ}?",
-        "{D2}What are the components of {SUBJ}?",
-        "{D1}What are the attributes of \"{OBJ}\"?",
-        "{D2}What are similar concepts to {OBJ}?",
-        "{D1}How are {SUBJ} and \"{OBJ}\" related?",
-        "{D2}What are similar concepts to {SUBJ} and {OBJ}?",
+        "{D}To what larger class of things does it belong?",
+        "{D}What are its parts, and how are they related?",
+        "{D}What is the nature of \"{SUBJ}\"?",
+        "{D}What are the components of \"{SUBJ}?\"",
+        "{D}What are the attributes of \"{OBJ}\"?",
+        "{D}What are similar concepts to \"{OBJ}\"?",
+        "{D}How are {SUBJ} and \"{OBJ}\" related?",
+        "{D}What are similar concepts to \"{SUBJ}\" and \"{OBJ}\"?",
 
         # Quality
-        "{Q1}Is it right or wrong?",
-        "{Q2}What would be a different evaluation?",
-        "{Q1}Is {SUBJ} good or bad?",
-        "{Q2}What if we measure {SUBJ} differently?",
+        "{Q1}Is it good or bad?",
+        "{Q2}What would be a different evaluation on \"{SUBJ}\"?",
+        "{Q1}Is \"{SUBJ}\" positive or negative?",
+        "{Q2}What if we measure \"{SUBJ}\" differently?",
         "{Q1}What role does \"{OBJ}\" serve?",
         "{Q2}Any different measurement about {OBJ}?",
 
         # Policy
-        "{P1}Opinion about this topic?",
-        "{P2}Who disagrees with you?",
-        "{P1}Opinion about {SUBJ}?",
-        "{P2}Any arguments against your opinion?",
-        "{P1}Opinion about \"{OBJ}\" in the topic?",
-        "{P2}Any disagreements about \"{OBJ}\"?",
+        "{P}With previous ideas, what do you want to advocate?",
+        "{P}Suggestion about \"{SUBJ}\" and \"{OBJ}\"?",
+        "{P}Opinion about \"{OBJ}\" in the topic?",
+        "{P}What do you want to advocate about the \"{SUBJ}\"?",
     ]
 
     def __init__(self, topic):
@@ -314,29 +288,23 @@ class Idea:
 
         # filter
         shuffle(qs)
-        q_fact = [''] * 2
-        q_definition = [''] * 2
+        q_fact = ['']
+        q_definition = ['']
         q_quality = [''] * 2
-        q_policy = [''] * 2
+        q_policy = ['']
         for q in qs:
             if '----' not in q:
-                if '{F1}' in q and not q_fact[0]:
-                    q_fact[0] = q.replace('{F1}', '').replace('--', '')
-                if '{F2}' in q and not q_fact[1]:
-                    q_fact[1] = q.replace('{F2}', '').replace('--', '')
-                if '{D1}' in q and not q_definition[0]:
-                    q_definition[0] = q.replace('{D1}', '').replace('--', '')
-                if '{D2}' in q and not q_definition[1]:
-                    q_definition[1] = q.replace('{D2}', '').replace('--', '')
+                if '{F}' in q and not q_fact[0]:
+                    q_fact[0] = q.replace('{F}', '').replace('--', '')
+                if '{D}' in q and not q_definition[0]:
+                    q_definition[0] = q.replace('{D}', '').replace('--', '')
                 if '{Q1}' in q and not q_quality[0]:
                     q_quality[0] = q.replace('{Q1}', '').replace('--', '')
                 if '{Q2}' in q and not q_quality[1]:
                     q_quality[1] = q.replace('{Q2}', '').replace('--', '')
-                if '{P1}' in q and not q_policy[0]:
-                    q_policy[0] = q.replace('{P1}', '').replace('--', '')
-                if '{P2}' in q and not q_policy[1]:
-                    q_policy[1] = q.replace('{P2}', '').replace('--', '')
+                if '{P}' in q and not q_policy[0]:
+                    q_policy[0] = q.replace('{P}', '').replace('--', '')
 
-        questions = {"fact": q_fact, "definition": q_definition, "quality": q_quality, "policy": q_policy}
+        questions = q_fact + q_definition + q_quality + q_policy
 
         return questions

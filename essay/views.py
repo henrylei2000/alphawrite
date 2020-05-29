@@ -27,14 +27,11 @@ def dashboard(request):
 
 def build(request):
     ideas = {
-        'fact1': request.POST['fact1'],
-        'fact2': request.POST['fact2'],
-        'definition1': request.POST['definition1'],
-        'definition2': request.POST['definition2'],
-        'quality1': request.POST['quality1'],
-        'quality2': request.POST['quality2'],
-        'policy1': request.POST['policy1'],
-        'policy2': request.POST['policy2'],
+        'fact': request.POST['fact'],
+        'definition': request.POST['definition'],
+        'quality': request.POST['quality'],
+        'counterpoint': request.POST['counterpoint'],
+        'policy': request.POST['policy'],
     }
     thesis = Thesis(ideas)
 

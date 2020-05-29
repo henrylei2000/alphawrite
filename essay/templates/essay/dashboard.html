@@ -20,6 +20,8 @@ textarea:focus {
 }
 
 .form-group {
+  width: 90%;
+  margin-bottom: 50px;
   position:relative;
   & + .form-group {
     margin-top: 10px;
@@ -58,7 +60,7 @@ textarea:focus {
 {% endblock style%}
 {% block content %}
 <body class="bg-light">
-  <div class="container h-75">
+  <div class="container">
     <div class="mt-5 mb-4"><h5 class="debug">{{ topic }}</h5></div>
     <ul class="nav nav-tabs nav-pills" role="tablist">
       <li class="nav-item">
@@ -77,26 +79,14 @@ textarea:focus {
     <div class="tab-content mt-5">
       <!-- ideas -->
       <div class="tab-pane fade show active" id="ideas" role="tabpanel" aria-labelledby="ideas-tab">
-          <div class="row d-flex justify-content-center">
-            {% for key, values in idea.generate_questions.items %}
-            <div class="col-sm-5 mb-5">
-              <div class="card border-primary">
-                <div class="card-header">
-                  {{key|capfirst}}
-                </div>
-                <div class="card-body">
-                  {% for question in values %}
-                    <div class="form-group">
-                      <label class="form-label" for="{{key}}-{{ forloop.counter }}">{{question}}</label>
-                      <textarea id="{{key}}-{{ forloop.counter }}" class="ideas form-input mb-2" rows="1"></textarea>
-                    </div>
-                  {% endfor %}
-                </div>
-
-              </div>
-            </div>
-            {% endfor %}
+        {% for question in idea.generate_questions %}
+        <div class="row justify-content-md-center">
+          <div class="form-group">
+            <label class="form-label bg-light" for="q{{ forloop.counter }}">{{question}}</label>
+            <textarea id="q{{ forloop.counter }}" class="ideas form-input mb-2 bg-light" rows="1"></textarea>
           </div>
+        </div>
+        {% endfor %}
       </div>
       <!-- end of ideas -->
 
@@ -205,19 +195,17 @@ $(function() {
       method: "POST",
       url: url,
       data: {
-        fact1: $.trim($('#fact-1').val()),
-        fact2: $.trim($('#fact-2').val()),
-        definition1: $.trim($('#definition-1').val()),
-        definition2: $.trim($('#definition-2').val()),
-        quality1: $.trim($('#quality-1').val()),
-        quality2: $.trim($('#quality-2').val()),
-        policy1: $.trim($('#policy-1').val()),
-        policy2: $.trim($('#policy-2').val()),
+        fact: $.trim($('#q1').val()),
+        definition: $.trim($('#q2').val()),
+        quality: $.trim($('#q3').val()),
+        counterpoint: $.trim($('#q4').val()),
+        policy: $.trim($('#q5').val()),
       },
       success: function (data) {
         if (data['argument'].length > 0) {
           $('#argument').focus();
           $('#argument').val(data['argument']);
+          $('#argument').click();
           $('#argument').blur();
         }
         var i;
