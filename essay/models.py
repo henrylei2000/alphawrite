@@ -191,18 +191,18 @@ class Idea:
         "{F1}What happened to {ENTS}?",
         "{F2}What is the story behind {ENTS}?",
         "{F1}What do we know about {SUBJ}.",
-        "{F2}Any knowledge about {SUBJ} in the topic?",
+        "{F2}Any knowledge about {SUBJ}?",
         "{F1}What do we know about {SUBJ} and {OBJ}.",
-        "{F2}Any knowledge about {SUBJ} and {OBJ}?",
+        "{F2}Any knowledge about {SUBJ} and \"{OBJ}\"?",
 
         # Definition
         "{D1}To what larger class of things does it belong?",
         "{D2}What are its parts, and how are they related?",
         "{D1}What is the nature of {SUBJ}?",
         "{D2}What are the components of {SUBJ}?",
-        "{D1}What are the attributes of {OBJ}?",
+        "{D1}What are the attributes of \"{OBJ}\"?",
         "{D2}What are similar concepts to {OBJ}?",
-        "{D1}How are {SUBJ} and {OBJ} related?",
+        "{D1}How are {SUBJ} and \"{OBJ}\" related?",
         "{D2}What are similar concepts to {SUBJ} and {OBJ}?",
 
         # Quality
@@ -210,16 +210,16 @@ class Idea:
         "{Q2}What would be a different evaluation?",
         "{Q1}Is {SUBJ} good or bad?",
         "{Q2}What if we measure {SUBJ} differently?",
-        "{Q1}What role does the {OBJ} serve?",
-        "{Q2}Any argument on the role of {OBJ}?",
+        "{Q1}What role does \"{OBJ}\" serve?",
+        "{Q2}Any different measurement about {OBJ}?",
 
         # Policy
         "{P1}Opinion about this topic?",
         "{P2}Who disagrees with you?",
-        "{P1}Opinion about {SUBJ} in the topic?",
+        "{P1}Opinion about {SUBJ}?",
         "{P2}Any arguments against your opinion?",
-        "{P1}Opinion about {OBJ} in the topic?",
-        "{P2}Any disagreements about {OBJ}?",
+        "{P1}Opinion about \"{OBJ}\" in the topic?",
+        "{P2}Any disagreements about \"{OBJ}\"?",
     ]
 
     def __init__(self, topic):
@@ -255,11 +255,12 @@ class Idea:
 
         nlp = spacy.load('en_core_web_sm')
         doc = nlp(self.topic)
-        sentence = next(doc.sents)
+        sentence = next(doc.sents)  # last sentence in prompt
+
         for word in sentence:
             if word.dep_ == 'nsubj':
                 self.subject = word.text
-            if word.dep_ == 'dobj' or word.dep_ == 'obj':
+            if word.dep_ in ['dobj', 'obj']:
                 self.object = word.text
             if word.dep_ == 'ROOT':
                 if word.pos_ == 'VERB':
@@ -276,12 +277,13 @@ class Idea:
         if self.object:
             for chunk in doc.noun_chunks:
                 if self.object in chunk.text:
-                    self.object = chunk.text
+                    if 'What' not in chunk.text and 'Which' not in chunk.text:
+                        self.object = chunk.text
                     break
 
         entities = []
         for ent in doc.ents:
-            if ent.label_ == 'PERSON' or ent.label_ == 'ORG' or ent.label_ == 'EVENT' or ent.label_ == 'GPE':
+            if ent.label_ in ['PERSON', 'ORG', 'EVENT', 'GPE', 'NORP']:
                 entities.append(ent.text)
 
         ents = ""
@@ -334,7 +336,6 @@ class Idea:
                     q_policy[0] = q.replace('{P1}', '').replace('--', '')
                 if '{P2}' in q:
                     q_policy[1] = q.replace('{P2}', '').replace('--', '')
-
 
         questions = {"fact": q_fact, "definition": q_definition, "quality": q_quality, "policy": q_policy}
 
