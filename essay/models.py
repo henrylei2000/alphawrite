@@ -184,40 +184,43 @@ class Assignment:
 
 
 class Idea:
+    questions = [
+        # Facts
+        "{F1}What is the problem?",
+        "{F2}How did it begin and what are the causes?",
+        "{F1}What happened to {ENTS}?",
+        "{F2}What is the story behind {ENTS}?",
+        "{F1}What do we know about {SUBJ}.",
+        "{F2}Any knowledge about {SUBJ} in the topic?",
+        "{F1}What do we know about {SUBJ} and {OBJ}.",
+        "{F2}Any knowledge about {SUBJ} and {OBJ}?",
 
-    q_fact = [
-        "What is the problem?",
-        "How did it begin and what are the causes?",
-        "What happened with {ENTS}?",
-        "Any known opinion about {ENTS}?",
-        "List facts about {SUBJ}.",
-        "Any knowledge about {SUBJ} in the topic?"]
+        # Definition
+        "{D1}To what larger class of things does it belong?",
+        "{D2}What are its parts, and how are they related?",
+        "{D1}What is the nature of {SUBJ}?",
+        "{D2}What are the components of {SUBJ}?",
+        "{D1}What are the attributes of {OBJ}?",
+        "{D2}What are similar concepts to {OBJ}?",
+        "{D1}How are {SUBJ} and {OBJ} related?",
+        "{D2}What are similar concepts to {SUBJ} and {OBJ}?",
 
-    q_definition = [
-        "To what larger class of things does it belong?",
-        "What are its parts, and how are they related?",
-        "What is the nature of {SUBJ}?",
-        "What are components of {SUBJ}?",
-        "What are similar concepts for {OBJ}?",
-        "What are aspects of {OBJ}?"]
+        # Quality
+        "{Q1}Is it right or wrong?",
+        "{Q2}What would be a different evaluation?",
+        "{Q1}Is {SUBJ} good or bad?",
+        "{Q2}What if we measure {SUBJ} differently?",
+        "{Q1}What role does the {OBJ} serve?",
+        "{Q2}Any argument on the role of {OBJ}?",
 
-    q_quality = [
-        "What is the damage of this problem?",
-        "Is there positive impact of this issue?",
-        "What role did {SUBJ} play, good or bad?",
-        "What makes {SUBJ} significant?",
-        "Does it make sense to discuss {OBJ}?",
-        "What's the measurement of {OBJ}?",
-        ]
-
-    q_policy = [
-        "Opinion about this topic?",
-        "Who disagrees with you?",
-        "Opinion about {SUBJ} in the topic?",
-        "Any disagreement about {SUBJ}?",
-        "Opinion about {OBJ} in the topic?",
-        "Any disagreement about {OBJ}?",
-        ]
+        # Policy
+        "{P1}Opinion about this topic?",
+        "{P2}Who disagrees with you?",
+        "{P1}Opinion about {SUBJ} in the topic?",
+        "{P2}Any arguments against your opinion?",
+        "{P1}Opinion about {OBJ} in the topic?",
+        "{P2}Any disagreements about {OBJ}?",
+    ]
 
     def __init__(self, topic):
         self.topic = topic
@@ -276,73 +279,62 @@ class Idea:
                     self.object = chunk.text
                     break
 
+        entities = []
         for ent in doc.ents:
             if ent.label_ == 'PERSON' or ent.label_ == 'ORG' or ent.label_ == 'EVENT' or ent.label_ == 'GPE':
-                self.entities.append(ent.text)
+                entities.append(ent.text)
+
+        ents = ""
+        num_ents = len(entities)
+        if num_ents:
+            ents = entities[0]
+            if num_ents == 2:
+                ents += " and " + entities[1]
+            elif num_ents > 2:  # 3 and more
+                for i in range(1, num_ents - 1):
+                    ents += ", " + entities[i]
+                ents += ", and " + entities[num_ents - 1]
+
+        self.entities = ents
 
         self.processed = True
         return self
 
     def generate_questions(self):
-        questions = {"fact": self.q_fact, "definition": self.q_definition, "quality": self.q_quality, "policy": self.q_policy}
-        q_fact = self.q_fact[:2]
 
-        if self.subject:
-            q_fact = []
-            for q in self.q_fact:
-                if '{SUBJ}' in q:
-                    q_fact.append(q.replace('{SUBJ}', self.subject))
+        qs = []
 
-        num_ents = len(self.entities)
-        if num_ents:
-            ents = self.entities[0]
-            if num_ents == 2:
-                ents += " and " + self.entities[1]
-            elif num_ents > 2:  # 3 and more
-                for i in range(1, num_ents - 1):
-                    ents += ", " + self.entities[i]
-                ents += ", and " + self.entities[num_ents - 1]
+        # replaced with subj, obj, and entities
+        for q in self.questions:
+            qs.append(q.replace('{SUBJ}', '--' + self.subject + '--').
+                      replace('{OBJ}', '--' + self.object + '--').
+                      replace('{ENTS}', '--' + self.entities + '--'))
 
-            q_fact = []
-            for q in self.q_fact:
-                if '{ENTS}' in q:
-                    q_fact.append(q.replace('{ENTS}', ents))
+        # filter
+        shuffle(qs)
+        q_fact = [''] * 2
+        q_definition = [''] * 2
+        q_quality = [''] * 2
+        q_policy = [''] * 2
+        for q in qs:
+            if '----' not in q:
+                if '{F1}' in q:
+                    q_fact[0] = q.replace('{F1}', '').replace('--', '')
+                if '{F2}' in q:
+                    q_fact[1] = q.replace('{F2}', '').replace('--', '')
+                if '{D1}' in q:
+                    q_definition[0] = q.replace('{D1}', '').replace('--', '')
+                if '{D2}' in q:
+                    q_definition[1] = q.replace('{D2}', '').replace('--', '')
+                if '{Q1}' in q:
+                    q_quality[0] = q.replace('{Q1}', '').replace('--', '')
+                if '{Q2}' in q:
+                    q_quality[1] = q.replace('{Q2}', '').replace('--', '')
+                if '{P1}' in q:
+                    q_policy[0] = q.replace('{P1}', '').replace('--', '')
+                if '{P2}' in q:
+                    q_policy[1] = q.replace('{P2}', '').replace('--', '')
 
-        q_definition = self.q_definition[:2]
-        if self.subject:
-            q_definition = []
-            for q in self.q_definition:
-                if '{SUBJ}' in q:
-                    q_definition.append(q.replace('{SUBJ}', self.subject))
-        elif self.object:
-            q_definition = []
-            for q in self.q_definition:
-                if '{OBJ}' in q:
-                    q_definition.append(q.replace('{OBJ}', self.object))
-
-        q_quality = self.q_quality[:2]
-        if self.subject:
-            q_quality = []
-            for q in self.q_quality:
-                if '{SUBJ}' in q:
-                    q_quality.append(q.replace('{SUBJ}', self.subject))
-        elif self.object:
-            q_quality = []
-            for q in self.q_quality:
-                if '{OBJ}' in q:
-                    q_quality.append(q.replace('{OBJ}', self.object))
-
-        q_policy = self.q_policy[:2]
-        if self.subject:
-            q_policy = []
-            for q in self.q_policy:
-                if '{SUBJ}' in q:
-                    q_policy.append(q.replace('{SUBJ}', self.subject))
-        elif self.object:
-            q_policy = []
-            for q in self.q_policy:
-                if '{OBJ}' in q:
-                    q_policy.append(q.replace('{OBJ}', self.object))
 
         questions = {"fact": q_fact, "definition": q_definition, "quality": q_quality, "policy": q_policy}
 
