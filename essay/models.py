@@ -320,21 +320,21 @@ class Idea:
         q_policy = [''] * 2
         for q in qs:
             if '----' not in q:
-                if '{F1}' in q:
+                if '{F1}' in q and not q_fact[0]:
                     q_fact[0] = q.replace('{F1}', '').replace('--', '')
-                if '{F2}' in q:
+                if '{F2}' in q and not q_fact[1]:
                     q_fact[1] = q.replace('{F2}', '').replace('--', '')
-                if '{D1}' in q:
+                if '{D1}' in q and not q_definition[0]:
                     q_definition[0] = q.replace('{D1}', '').replace('--', '')
-                if '{D2}' in q:
+                if '{D2}' in q and not q_definition[1]:
                     q_definition[1] = q.replace('{D2}', '').replace('--', '')
-                if '{Q1}' in q:
+                if '{Q1}' in q and not q_quality[0]:
                     q_quality[0] = q.replace('{Q1}', '').replace('--', '')
-                if '{Q2}' in q:
+                if '{Q2}' in q and not q_quality[1]:
                     q_quality[1] = q.replace('{Q2}', '').replace('--', '')
-                if '{P1}' in q:
+                if '{P1}' in q and not q_policy[0]:
                     q_policy[0] = q.replace('{P1}', '').replace('--', '')
-                if '{P2}' in q:
+                if '{P2}' in q and not q_policy[1]:
                     q_policy[1] = q.replace('{P2}', '').replace('--', '')
 
         questions = {"fact": q_fact, "definition": q_definition, "quality": q_quality, "policy": q_policy}
