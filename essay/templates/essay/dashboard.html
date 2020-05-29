@@ -67,7 +67,7 @@ textarea:focus {
         <a class="nav-link active" data-toggle="tab" href="#ideas" role="tab" aria-selected="true"><i class="fas fa-seedling"></i> Ideas</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" data-toggle="tab" href="#thesis" role="tab" aria-controls="contact" aria-selected="false"><i class="fas fa-apple-alt"></i> Thesis</a>
+        <a class="nav-link" data-toggle="tab" href="#thesis" role="tab" aria-controls="contact" aria-selected="false"><i class="fas fa-apple-alt"></i> Thesis</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#outline" role="tab" aria-controls="contact" aria-selected="false"><i class="fas fa-layer-group"></i> Outline</a>
@@ -98,8 +98,8 @@ textarea:focus {
     {% for i in "123" %}
     <div class="col">
       <div class="form-group">
-        <label class="form-label" for="evidence-{{i}}">Evidence {{i}}</label>
-        <textarea id="evidence-{{i}}" class="thesis form-input" rows="1"></textarea>
+        <label class="form-label bg-light" for="evidence-{{i}}">Evidence {{i}}</label>
+        <textarea id="evidence-{{i}}" class="thesis form-input bg-light" rows="1"></textarea>
       </div>
     </div>
     {% endfor %}
@@ -108,8 +108,8 @@ textarea:focus {
     {% for i in "123" %}
     <div class="col">
       <div class="form-group">
-        <label class="form-label" for="claim-{{i}}">Claim {{i}}</label>
-        <textarea id="claim-{{i}}" class="thesis form-input" rows="1"></textarea>
+        <label class="form-label bg-light" for="claim-{{i}}">Claim {{i}}</label>
+        <textarea id="claim-{{i}}" class="thesis form-input bg-light" rows="1"></textarea>
       </div>
     </div>
     {% endfor %}
@@ -117,8 +117,8 @@ textarea:focus {
   <div class="row justify-content-md-center">
     <div class="col col-lg-8">
       <div class="form-group">
-        <label class="form-label" for="argument">Main Claim</label>
-        <textarea id="argument" class="thesis form-input" rows="1"></textarea>
+        <label class="form-label bg-light" for="argument">Main Claim</label>
+        <textarea id="argument" class="thesis form-input bg-light" rows="1"></textarea>
       </div>
     </div>
   </div>
