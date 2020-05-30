@@ -35,7 +35,7 @@ def build(request):
     }
     thesis = Thesis(ideas)
 
-    return JsonResponse(thesis.build())
+    return JsonResponse(thesis.prepare())
 
 
 def span(request):

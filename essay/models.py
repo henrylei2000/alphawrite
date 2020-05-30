@@ -13,7 +13,7 @@ class Thesis:
     def __str__(self):
         return self.build()
 
-    def build(self):
+    def prepare(self):
 
         # build evidences
         evidences = []
@@ -29,7 +29,10 @@ class Thesis:
 
         policy = self.ideas.get("policy", "")
 
-        argument = policy + " " + quality
+        if quality and policy:
+            argument = policy + " " + quality
+        else:
+            argument = policy + quality
 
         return {'argument': argument, 'evidences': evidences}
 
@@ -167,7 +170,7 @@ class Idea:
         "{F}What happened to {ENTS}?",
         "{F}What is the story behind {ENTS}?",
         "{F}What do we know about \"{SUBJ}\".",
-        "{F}What happened \"{SUBJ}\"?",
+        "{F}What happened to \"{SUBJ}\"?",
         "{F}What do we know about {SUBJ} and {OBJ}.",
         "{F}Any knowledge about \"{SUBJ}\" and \"{OBJ}\"?",
 
