@@ -167,9 +167,9 @@ class Idea:
         "{F}What happened to {ENTS}?",
         "{F}What is the story behind {ENTS}?",
         "{F}What do we know about \"{SUBJ}\".",
-        "{F}Any knowledge about \"{SUBJ}\"?",
+        "{F}What happened \"{SUBJ}\"?",
         "{F}What do we know about {SUBJ} and {OBJ}.",
-        "{F}Any knowledge about {SUBJ} and \"{OBJ}\"?",
+        "{F}Any knowledge about \"{SUBJ}\" and \"{OBJ}\"?",
 
         # Definition
         "{D}To what larger class of things does it belong?",
@@ -178,7 +178,7 @@ class Idea:
         "{D}What are the components of \"{SUBJ}?\"",
         "{D}What are the attributes of \"{OBJ}\"?",
         "{D}What are similar concepts to \"{OBJ}\"?",
-        "{D}How are {SUBJ} and \"{OBJ}\" related?",
+        "{D}How are \"{SUBJ}\" and \"{OBJ}\" related?",
         "{D}What are similar concepts to \"{SUBJ}\" and \"{OBJ}\"?",
 
         # Quality
@@ -187,7 +187,7 @@ class Idea:
         "{Q1}Is \"{SUBJ}\" positive or negative?",
         "{Q2}What if we measure \"{SUBJ}\" differently?",
         "{Q1}What role does \"{OBJ}\" serve?",
-        "{Q2}Any different measurement about {OBJ}?",
+        "{Q2}Any different measurement about \"{OBJ}\"?",
 
         # Policy
         "{P}With previous ideas, what do you want to advocate?",
