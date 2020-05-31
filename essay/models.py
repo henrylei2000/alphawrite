@@ -169,9 +169,9 @@ class Idea:
         "{F}How did it begin and what are the causes?",
         "{F}What happened to {ENTS}?",
         "{F}What is the story behind {ENTS}?",
-        "{F}What do we know about \"{SUBJ}\".",
+        "{F}What do we know about \"{SUBJ}\"?",
         "{F}What happened to \"{SUBJ}\"?",
-        "{F}What do we know about {SUBJ} and {OBJ}.",
+        "{F}What do we know about {SUBJ} and {OBJ}?",
         "{F}Any knowledge about \"{SUBJ}\" and \"{OBJ}\"?",
 
         # Definition
@@ -307,6 +307,6 @@ class Idea:
                 if '{P}' in q and not q_policy[0]:
                     q_policy[0] = q.replace('{P}', '').replace('--', '')
 
-        questions = q_fact + q_definition + q_quality + q_policy
+        questions = q_fact + q_definition + q_quality  # + q_policy
 
         return questions

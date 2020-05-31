@@ -189,6 +189,16 @@ $(function() {
     $(this).height($(this).prop('scrollHeight'));
   });
 
+  $('.ideas, .thesis').on('keyup paste', debounce(function() {
+    if ($.trim($(this).val()) != "") {
+      $(this).siblings('.form-label').addClass('filled');
+      $(this).addClass("filled");
+      if ($('#tab_thesis').hasClass('disabled')) {
+        $('#tab_thesis').removeClass('disabled');
+      }
+    }
+  }, 3000));
+
   $('.nav-tabs a').on('shown.bs.tab', function(e){
     var url = "{% url 'essay:build' %}";
     $.ajax({
