@@ -98,7 +98,7 @@ textarea:focus {
     {% for type in evidence_types %}
     <div class="col">
       <div class="form-group">
-        <label class="form-label bg-light" for="evidence-{{ forloop.counter0 }}">Evidence <i class="fas fa-{{type}}"></i></label>
+        <label class="form-label bg-light" for="evidence-{{ forloop.counter0 }}"><i class="fas fa-{{type}}"></i> Evidence</label>
         <textarea id="evidence-{{ forloop.counter0 }}" class="thesis form-input bg-light" rows="1"></textarea>
       </div>
     </div>
@@ -108,7 +108,7 @@ textarea:focus {
     {% for type in evidence_types %}
     <div class="col">
       <div class="form-group">
-        <label class="form-label bg-light" for="claim-{{i}}">Link <i class="fas fa-{{type}}"></i> to <i class="fas fa-cloud-showers-heavy"></i></label>
+        <label class="form-label bg-light" for="claim-{{i}}">How do you link <i class="fas fa-{{type}}"></i> to <i class="fas fa-cloud-showers-heavy"></i> ?</label>
         <textarea id="claim-{{i}}" class="thesis form-input bg-light" rows="1"></textarea>
       </div>
     </div>
@@ -117,7 +117,7 @@ textarea:focus {
   <div class="row justify-content-md-center">
     <div class="col col-lg-8">
       <div class="form-group">
-        <label class="form-label bg-light" for="argument">Argument <i class="fas fa-cloud-showers-heavy"></i></label>
+        <label class="form-label bg-light" for="argument"><i class="fas fa-cloud-showers-heavy"></i> Argument</label>
         <textarea id="argument" class="thesis form-input bg-light" rows="1"></textarea>
       </div>
     </div>
