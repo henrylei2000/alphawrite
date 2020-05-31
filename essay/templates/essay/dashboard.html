@@ -61,7 +61,7 @@ textarea:focus {
 {% block content %}
 <body class="bg-light">
   <div class="container">
-    <div class="mt-5 mb-4"><h5 class="debug">{{ topic }}</h5></div>
+    <div class="mt-5 mb-4"><h5 class="debug">{{ idea.topic }}</h5></div>
     <ul class="nav nav-tabs nav-pills" role="tablist">
       <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#ideas" role="tab" aria-selected="true"><i class="fas fa-seedling"></i> Ideas</a>
@@ -95,20 +95,20 @@ textarea:focus {
 
 <div class="container">
   <div class="row">
-    {% for i in "123" %}
+    {% for type in evidence_types %}
     <div class="col">
       <div class="form-group">
-        <label class="form-label bg-light" for="evidence-{{i}}">Evidence {{i}}</label>
-        <textarea id="evidence-{{i}}" class="thesis form-input bg-light" rows="1"></textarea>
+        <label class="form-label bg-light" for="evidence-{{ forloop.counter0 }}">Evidence <i class="fas fa-{{type}}"></i></label>
+        <textarea id="evidence-{{ forloop.counter0 }}" class="thesis form-input bg-light" rows="1"></textarea>
       </div>
     </div>
     {% endfor %}
   </div>
   <div class="row">
-    {% for i in "123" %}
+    {% for type in evidence_types %}
     <div class="col">
       <div class="form-group">
-        <label class="form-label bg-light" for="claim-{{i}}">Claim {{i}}</label>
+        <label class="form-label bg-light" for="claim-{{i}}">Link <i class="fas fa-{{type}}"></i> to <i class="fas fa-cloud-showers-heavy"></i></label>
         <textarea id="claim-{{i}}" class="thesis form-input bg-light" rows="1"></textarea>
       </div>
     </div>
@@ -117,7 +117,7 @@ textarea:focus {
   <div class="row justify-content-md-center">
     <div class="col col-lg-8">
       <div class="form-group">
-        <label class="form-label bg-light" for="argument">Main Claim</label>
+        <label class="form-label bg-light" for="argument">Argument <i class="fas fa-cloud-showers-heavy"></i></label>
         <textarea id="argument" class="thesis form-input bg-light" rows="1"></textarea>
       </div>
     </div>
@@ -209,12 +209,11 @@ $(function() {
           $('#argument').click();
           $('#argument').blur();
         }
-        var i;
-        for (i = 0; i < data['evidences'].length; i++) {
-          $('#evidence-' + String(i + 1)).focus();
-          $('#evidence-' + String(i + 1)).val(data['evidences'][i]);
-          $('#evidence-' + String(i + 1)).click();
-          $('#evidence-' + String(i + 1)).blur();
+        for (i=0; i<data['evidences'].length; i++) {
+          $('#evidence-' + String(i)).focus();
+          $('#evidence-' + String(i)).val(data['evidences'][i]);
+          $('#evidence-' + String(i)).click();
+          $('#evidence-' + String(i)).blur();
         }
       }
     });

@@ -20,8 +20,8 @@ def dashboard(request):
         return render(request, 'essay/index.html', {'idea': idea})
     else:
         return render(request, 'essay/dashboard.html', {
-            'topic': idea.process().topic,
-            'idea': idea
+            'idea': idea,
+            'evidence_types': ['cloud', 'cloud-rain', 'cloud-sun'],
         })
 
 

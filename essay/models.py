@@ -16,16 +16,16 @@ class Thesis:
     def prepare(self):
 
         # build evidences
-        evidences = []
+
         fact = self.ideas.get("fact", "")
-        evidences += [fact]
 
         definition = self.ideas.get("definition", "")
-        evidences += [definition]
 
         quality = self.ideas.get("quality", "")
+
         counterpoint = self.ideas.get("counterpoint", "")
-        evidences += [counterpoint]
+
+        evidences = [fact, definition, counterpoint]
 
         policy = self.ideas.get("policy", "")
 
@@ -175,7 +175,6 @@ class Idea:
         "{F}Any knowledge about \"{SUBJ}\" and \"{OBJ}\"?",
 
         # Definition
-        "{D}To what larger class of things does it belong?",
         "{D}What are its parts, and how are they related?",
         "{D}What is the nature of \"{SUBJ}\"?",
         "{D}What are the components of \"{SUBJ}?\"",
@@ -190,12 +189,12 @@ class Idea:
         "{Q1}Is \"{SUBJ}\" positive or negative?",
         "{Q2}What if we measure \"{SUBJ}\" differently?",
         "{Q1}What role does \"{OBJ}\" serve?",
+        "{Q1}Opinion about \"{OBJ}\" in the topic?",
         "{Q2}Any different measurement about \"{OBJ}\"?",
 
         # Policy
         "{P}With previous ideas, what do you want to advocate?",
         "{P}Suggestion about \"{SUBJ}\" and \"{OBJ}\"?",
-        "{P}Opinion about \"{OBJ}\" in the topic?",
         "{P}What do you want to advocate about the \"{SUBJ}\"?",
     ]
 
