@@ -67,7 +67,7 @@ textarea:focus {
         <a class="nav-link active" data-toggle="tab" href="#ideas" role="tab" aria-selected="true"><i class="fas fa-seedling"></i> Ideas</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link disabled" id="tab_thesis" data-toggle="tab" href="#thesis" role="tab" aria-controls="thesis" aria-selected="false"><i class="fas fa-apple-alt"></i> Thesis</a>
+        <a class="nav-link disabled" id="thesis-tab" data-toggle="tab" href="#thesis" role="tab" aria-controls="thesis" aria-selected="false"><i class="fas fa-apple-alt"></i> Thesis</a>
       </li>
       <li class="nav-item">
         <a class="nav-link disabled" data-toggle="tab" href="#outline" role="tab" aria-controls="outline" aria-selected="false"><i class="fas fa-layer-group"></i> Outline</a>
@@ -82,8 +82,8 @@ textarea:focus {
         {% for question in idea.generate_questions %}
         <div class="row justify-content-md-center">
           <div class="form-group">
-            <label class="form-label bg-light" for="q{{ forloop.counter }}">{{question}}</label>
-            <textarea id="q{{ forloop.counter }}" class="ideas form-input mb-2 bg-light" rows="1"></textarea>
+            <label class="form-label bg-light" for="question-{{ forloop.counter0 }}">{{question}}</label>
+            <textarea id="question-{{ forloop.counter0 }}" class="ideas form-input mb-2 bg-light" rows="1"></textarea>
           </div>
         </div>
         {% endfor %}
@@ -92,36 +92,42 @@ textarea:focus {
 
       <!-- thesis -->
       <div class="tab-pane fade" id="thesis" role="tabpanel" aria-labelledby="thesis-tab">
-<div class="container">
-  <div class="row justify-content-md-center">
-    <div class="col col-lg-8">
-      <div class="form-group">
-        <label class="form-label bg-light" for="argument"><i class="fas fa-cloud-showers-heavy"></i> Argument</label>
-        <textarea id="argument" class="thesis form-input bg-light" rows="1"></textarea>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    {% for type in evidence_types %}
-    <div class="col">
-      <div class="form-group">
-        <label class="form-label bg-light" for="claim{{ forloop.counter }}">How do you link <i class="fas fa-{{type}}"></i> to <i class="fas fa-cloud-showers-heavy"></i> ?</label>
-        <textarea id="claim{{ forloop.counter }}" class="thesis form-input bg-light" rows="1"></textarea>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-  <div class="row">
-    {% for type in evidence_types %}
-    <div class="col">
-      <div class="form-group">
-        <label class="form-label bg-light" for="evidence-{{ forloop.counter0 }}"><i class="fas fa-{{type}}"></i> Evidence</label>
-        <textarea id="evidence-{{ forloop.counter0 }}" class="thesis form-input bg-light" rows="1"></textarea>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-</div>
+        <div class="container justify-content-md-center mb-5" id="tentative-thesis"><p class="lead">
+          <span id="thesis-argument" class="text-danger"></span>
+          <span id="thesis-claim-0" class="text-success"></span>
+          <span id="thesis-claim-1" class="text-info"></span>
+          <span id="thesis-claim-2" style="color: purple"></span>
+        </p></div>
+        <div class="container">
+          <div class="row justify-content-md-center">
+            <div class="col col-lg-8">
+              <div class="form-group">
+                <label class="form-label bg-light" for="argument"><i class="fas fa-cloud-showers-heavy"></i> Argument</label>
+                <textarea id="argument" class="thesis form-input bg-light" rows="1"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            {% for type in evidence_types %}
+            <div class="col">
+              <div class="form-group">
+                <label class="form-label bg-light" for="claim-{{ forloop.counter0 }}">How do you link <i class="fas fa-{{type}}"></i> to <i class="fas fa-cloud-showers-heavy"></i> ?</label>
+                <textarea id="claim-{{ forloop.counter0 }}" class="thesis form-input bg-light" rows="1"></textarea>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="row">
+            {% for type in evidence_types %}
+            <div class="col">
+              <div class="form-group">
+                <label class="form-label bg-light" for="evidence-{{ forloop.counter0 }}"><i class="fas fa-{{type}}"></i> Evidence</label>
+                <textarea id="evidence-{{ forloop.counter0 }}" class="thesis form-input bg-light" rows="1"></textarea>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
       </div>
       <!-- end of thesis -->
 
@@ -147,6 +153,13 @@ textarea:focus {
 {% block javascript %}
 <script>
 
+function hydrate(e, data) {
+  e.focus();
+  e.val(data);
+  e.click();
+  e.blur();
+}
+
 function debounce(func, wait, immediate) {
     var timeout;
     return function() {
@@ -166,18 +179,19 @@ $(function() {
 
   $('textarea').focus(function(){
     $(this).parents('.form-group').addClass('focused');
+    $(this).removeClass("filled");
+    $(this).siblings('.form-label').removeClass('filled');
   });
 
   $('textarea').blur(function(){
     var inputValue = $(this).val();
     if ( inputValue == "" ) {
       $(this).removeClass("filled");
-      $(this).parents('.form-group').removeClass('focused');
       $(this).siblings('.form-label').removeClass('filled');
+      $(this).parents('.form-group').removeClass('focused');
     } else {
-      $(this).siblings('.form-label').addClass('filled');
       $(this).addClass("filled");
-      $('#tab_thesis').removeClass('disabled');
+      $(this).siblings('.form-label').addClass('filled');
     }
   })
 
@@ -188,40 +202,57 @@ $(function() {
 
   $('.ideas, .thesis').on('keyup paste', debounce(function() {
     if ($.trim($(this).val()) != "") {
-      $(this).siblings('.form-label').addClass('filled');
       $(this).addClass("filled");
-      if ($('#tab_thesis').hasClass('disabled')) {
-        $('#tab_thesis').removeClass('disabled');
-      }
+      $(this).siblings('.form-label').addClass('filled');
     }
   }, 3000));
 
+  $('.ideas').on('keyup paste', debounce(function() {
+    if ($('.ideas.filled').length >= $('.ideas').length - 1) {
+      if ($('#thesis-tab').hasClass('disabled')) {
+        $('#thesis-tab').removeClass('disabled');
+      }
+    }
+  }, 500));
+
+  $('.thesis').on('keyup keypress paste', debounce(function() {
+    var e0 = $.trim($('#evidence-0').val());
+    if (e0 != "") $('#question-0').val(e0);
+    var e1 = $.trim($('#evidence-1').val());
+    if (e1 != "") $('#question-1').val(e1);
+    var e2 = $.trim($('#evidence-2').val());
+    if (e2 != "") $('#question-3').val(e2);
+    var ar = $.trim($('#argument').val());
+    if (ar != "") $('#question-2').val(ar);
+    /*if ($('.thesis.filled').length == $('.thesis').length) {*/
+      $('#thesis-argument').html(ar);
+      var i;
+      for (i = 0; i < 3; i++) {
+        $('#thesis-claim-' + String(i)).html($.trim($('#claim-' + String(i)).val()));
+      }
+    /*}*/
+  }, 100));
+
   $('.nav-tabs a').on('shown.bs.tab', function(e){
-    if ($(e.target).attr('id') == 'tab_thesis') {
+    if ($(e.target).attr('id') == 'thesis-tab') {
       var url = "{% url 'essay:build' %}";
       $.ajax({
         headers: {'X-CSRFToken': '{{csrf_token}}'},
         method: "POST",
         url: url,
         data: {
-          fact: $.trim($('#q1').val()),
-          definition: $.trim($('#q2').val()),
-          quality: $.trim($('#q3').val()),
-          counterpoint: $.trim($('#q4').val()),
-          policy: $.trim($('#q5').val()),
+          fact: $.trim($('#question-0').val()),
+          definition: $.trim($('#question-1').val()),
+          quality: $.trim($('#question-2').val()),
+          counterpoint: $.trim($('#question-3').val()),
+          policy: $.trim($('#question-4').val()),
         },
         success: function (data) {
           if (data['argument'].length > 0) {
-            $('#argument').focus();
-            $('#argument').val(data['argument']);
-            $('#argument').click();
-            $('#argument').blur();
+            hydrate($('#argument'), data['argument']);
           }
           for (i=0; i<data['evidences'].length; i++) {
-            $('#evidence-' + String(i)).focus();
-            $('#evidence-' + String(i)).val(data['evidences'][i]);
-            $('#evidence-' + String(i)).click();
-            $('#evidence-' + String(i)).blur();
+            hydrate($('#evidence-' + String(i)), data['evidences'][i]);
           }
         }
       });
