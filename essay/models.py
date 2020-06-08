@@ -43,13 +43,23 @@ class Outline:
         self.structure = ""
         self.elements = elements
         self.argument = elements['argument']
+        self.claims = elements['claims']
         self.evidences = elements['evidences']
 
     def introduction(self):
         pass
 
     def generate(self):
-        return {'argument': '10, 9, 8, 7, ...'}
+        introduction = self.argument
+        for c in self.claims:
+            introduction += " " + c
+
+        paragraphs = []
+        for i in range(len(self.claims)):
+            paragraphs.append(self.claims[i] + " " + self.evidences[i])
+
+        conclusion = introduction
+        return {'introduction': introduction, 'paragraphs': paragraphs, 'conclusion': conclusion}
 
 
 # model for transition
