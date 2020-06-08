@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from .models import Transition, Verb, Thesis, Assignment, Idea
+from .models import Transition, Verb, Thesis, Assignment, Idea, Outline
 
 
 def index(request):
@@ -36,6 +36,17 @@ def build(request):
     thesis = Thesis(ideas)
 
     return JsonResponse(thesis.prepare())
+
+
+def outline(request):
+    elements = {
+        'argument': request.POST['argument'],
+        'claims': request.POST.getlist('claims'),
+        'evidences': request.POST.getlist('evidences'),
+    }
+
+    o = Outline(elements)
+    return JsonResponse(o.generate())
 
 
 def span(request):

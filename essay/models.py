@@ -38,13 +38,18 @@ class Thesis:
 
 
 class Outline:
-    def __init__(self, thesis):
+    def __init__(self, elements):
         self.type = ""
         self.structure = ""
-        self.thesis = thesis
+        self.elements = elements
+        self.argument = elements['argument']
+        self.evidences = elements['evidences']
 
     def introduction(self):
         pass
+
+    def generate(self):
+        return {'argument': '10, 9, 8, 7, ...'}
 
 
 # model for transition
