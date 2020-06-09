@@ -43,6 +43,7 @@ class Outline:
         self.structure = ""
         self.elements = elements
         self.argument = elements['argument']
+        self.entities = elements['entities']
         self.claims = elements['claims']
         self.evidences = elements['evidences']
 

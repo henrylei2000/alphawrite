@@ -43,6 +43,7 @@ def outline(request):
         'argument': request.POST['argument'],
         'claims': request.POST.getlist('claims[]'),
         'evidences': request.POST.getlist('evidences[]'),
+        'entities': request.POST['entities'],
     }
 
     o = Outline(elements)
