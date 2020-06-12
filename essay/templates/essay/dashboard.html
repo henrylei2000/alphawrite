@@ -56,6 +56,22 @@ textarea:focus {
   border-color: #28a745;
 }
 
+.editable
+{
+     display: inline-block;
+     word-wrap: break-word;
+     padding: 30px;
+     background-color: #f3f3f3;
+     border-radius: 3px;
+     outline: 0;
+}
+
+[data-placeholder]:empty:before {
+     content: attr(data-placeholder);
+     color: #888;
+     font-style: italic;
+}
+
 </style>
 {% endblock style%}
 {% block content %}
@@ -93,30 +109,19 @@ textarea:focus {
     <div class="tab-pane fade" id="thesis" role="tabpanel" aria-labelledby="thesis-tab">
       <div class="container">
         <div class="row justify-content-md-center">
-          <div class="col col-lg-8">
-            <div class="form-group">
-              <label class="form-label bg-light" for="argument"><i class="fas fa-cloud-showers-heavy"></i> Argument</label>
-              <textarea id="argument" class="thesis form-input bg-light" rows="1"></textarea>
-            </div>
-          </div>
+          <div id="argument" class="editable col col-lg-8 thesis" contenteditable="true"></div>
         </div>
         <div class="row">
           {% for type in evidence_types %}
           <div class="col">
-            <div class="form-group">
-              <label class="form-label bg-light" for="claim-{{ forloop.counter0 }}">How do you link <i class="fas fa-{{type}}"></i> to <i class="fas fa-cloud-showers-heavy"></i> ?</label>
-              <textarea id="claim-{{ forloop.counter0 }}" class="thesis form-input bg-light" rows="1"></textarea>
-            </div>
+            <div  id="claim-{{ forloop.counter0 }}" class="editable thesis" contenteditable="true" data-placeholder="How do you link the evidence below and the claim above?"></div>
           </div>
           {% endfor %}
         </div>
         <div class="row">
           {% for type in evidence_types %}
           <div class="col">
-            <div class="form-group">
-              <label class="form-label bg-light" for="evidence-{{ forloop.counter0 }}"><i class="fas fa-{{type}}"></i> Evidence</label>
-              <textarea id="evidence-{{ forloop.counter0 }}" class="thesis form-input bg-light" rows="1"></textarea>
-            </div>
+            <div  id="evidence-{{ forloop.counter0 }}" class="editable thesis" contenteditable="true"></div>
           </div>
           {% endfor %}
         </div>
@@ -221,24 +226,25 @@ $(function() {
   }, 500));
 
   $('.thesis').on('keyup keypress paste', debounce(function() {
-    var e0 = $.trim($('#evidence-0').val());
+    var e0 = $.trim($('#evidence-0').text());
     if (e0 != "") $('#question-0').val(e0);
-    var e1 = $.trim($('#evidence-1').val());
+    var e1 = $.trim($('#evidence-1').text());
     if (e1 != "") $('#question-1').val(e1);
-    var e2 = $.trim($('#evidence-2').val());
+    var e2 = $.trim($('#evidence-2').text());
     if (e2 != "") $('#question-3').val(e2);
-    var ar = $.trim($('#argument').val());
+    var ar = $.trim($('#argument').text());
     if (ar != "") $('#question-2').val(ar);
-    if ($('.thesis.filled').length >= $('.thesis').length - 1) {
+
+
       $('#thesis-argument').html(ar);
       var i;
       for (i = 0; i < 3; i++) {
-        $('#thesis-claim-' + String(i)).html($.trim($('#claim-' + String(i)).val()));
+        $('#thesis-claim-' + String(i)).html($.trim($('#claim-' + String(i)).text()));
       }
       if ($('#outline-tab').hasClass('disabled')) {
         $('#outline-tab').removeClass('disabled');
       }
-    }
+
   }, 100));
 
   $('.nav-tabs a').on('shown.bs.tab', function(e){
@@ -257,10 +263,10 @@ $(function() {
         },
         success: function (data) {
           if (data['argument'].length > 0) {
-            hydrate($('#argument'), data['argument']);
+            $('#argument').html(data['argument']);
           }
           for (i=0; i<data['evidences'].length; i++) {
-            hydrate($('#evidence-' + String(i)), data['evidences'][i]);
+            $('#evidence-' + String(i)).html(data['evidences'][i]);
           }
         }
       });
@@ -272,10 +278,10 @@ $(function() {
         method: "POST",
         url: url,
         data: {
-          argument: $.trim($('#argument').val()),
+          argument: $.trim($('#argument').text()),
           entities: $('#entities').val(),
-          'claims[]': [$.trim($('#claim-0').val()), $.trim($('#claim-1').val()), $.trim($('#claim-2').val())],
-          'evidences[]': [$.trim($('#evidence-0').val()), $.trim($('#evidence-1').val()), $.trim($('#evidence-2').val())],
+          'claims[]': [$.trim($('#claim-0').text()), $.trim($('#claim-1').text()), $.trim($('#claim-2').text())],
+          'evidences[]': [$.trim($('#evidence-0').text()), $.trim($('#evidence-1').text()), $.trim($('#evidence-2').text())],
         },
         success: function (data) {
           $('#outline-introduction').html(data['introduction']);
