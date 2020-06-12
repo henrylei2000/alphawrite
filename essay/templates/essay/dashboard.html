@@ -68,8 +68,6 @@ textarea:focus {
 
 [data-placeholder]:empty:before {
      content: attr(data-placeholder);
-     color: #888;
-     font-style: italic;
 }
 
 </style>
@@ -108,17 +106,17 @@ textarea:focus {
     <!-- thesis -->
     <div class="tab-pane fade" id="thesis" role="tabpanel" aria-labelledby="thesis-tab">
       <div class="container">
-        <div class="row justify-content-md-center">
+        <div class="row justify-content-md-center mb-2">
           <div id="argument" class="editable col col-lg-8 thesis" contenteditable="true"></div>
         </div>
-        <div class="row">
+        <div class="row mb-2">
           {% for type in evidence_types %}
           <div class="col">
             <div  id="claim-{{ forloop.counter0 }}" class="editable thesis" contenteditable="true" data-placeholder="How do you link the evidence below and the claim above?"></div>
           </div>
           {% endfor %}
         </div>
-        <div class="row">
+        <div class="row mb-2">
           {% for type in evidence_types %}
           <div class="col">
             <div  id="evidence-{{ forloop.counter0 }}" class="editable thesis" contenteditable="true"></div>
@@ -293,6 +291,17 @@ $(function() {
       });
     }
   });
+
+  var editors = document.querySelectorAll('div[contenteditable]');
+  for(var i = 0, l = editors.length; i < l; i++) {
+     editors[i].addEventListener('paste', myCustomPasteFunction);
+  }
+
+  function myCustomPasteFunction(e) {
+   e.preventDefault();
+   var text = e.clipboardData.getData("text/plain");
+   document.execCommand("insertHTML", false, text);
+  }
 
 });
 </script>
