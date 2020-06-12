@@ -74,7 +74,7 @@ textarea:focus {
 {% endblock style%}
 {% block content %}
 <div class="container">
-  <div class="mt-5 mb-4"><h5 class="debug">{{ idea.topic }}</h5></div>
+  <div class="mt-5 mb-4"><h4 class="debug">{{ idea.topic }}</h4></div>
   <ul class="nav nav-tabs nav-pills" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" data-toggle="tab" href="#ideas" role="tab" aria-selected="true"><i class="fas fa-seedling"></i> Ideas</a>
@@ -107,7 +107,9 @@ textarea:focus {
     <div class="tab-pane fade" id="thesis" role="tabpanel" aria-labelledby="thesis-tab">
       <div class="container">
         <div class="row justify-content-md-center mb-2">
-          <div id="argument" class="editable col col-lg-8 thesis" contenteditable="true"></div>
+          <div class="col">
+            <div id="argument" class="editable thesis" contenteditable="true"></div>
+          </div>
         </div>
         <div class="row mb-2">
           {% for type in evidence_types %}
