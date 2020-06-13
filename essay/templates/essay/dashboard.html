@@ -68,6 +68,7 @@ textarea:focus {
 
 [data-placeholder]:empty:before {
      content: attr(data-placeholder);
+     font-style: italic;
 }
 
 </style>
@@ -112,11 +113,15 @@ textarea:focus {
           </div>
         </div>
         <div class="row mb-2">
-          {% for type in evidence_types %}
           <div class="col">
-            <div  id="claim-{{ forloop.counter0 }}" class="editable thesis" contenteditable="true" data-placeholder="How do you link the evidence below and the claim above?"></div>
+            <div id="claim-0" class="editable thesis" contenteditable="true" data-placeholder="How does the fact below demonstrate the truth of the claim above?"></div>
           </div>
-          {% endfor %}
+          <div class="col">
+            <div id="claim-1" class="editable thesis" contenteditable="true" data-placeholder="How does the concept below link to the argument above?"></div>
+          </div>
+          <div class="col">
+            <div id="claim-2" class="editable thesis" contenteditable="true" data-placeholder="How does the argument above stand up to the counterargument below?"></div>
+          </div>
         </div>
         <div class="row mb-2">
           {% for type in evidence_types %}
@@ -162,14 +167,6 @@ textarea:focus {
 
 {% block javascript %}
 <script>
-
-function hydrate(e, data) {
-  e.focus();
-  e.val(data);
-  e.click();
-  e.blur();
-}
-
 function debounce(func, wait, immediate) {
     var timeout;
     return function() {
@@ -235,15 +232,14 @@ $(function() {
     var ar = $.trim($('#argument').text());
     if (ar != "") $('#question-2').val(ar);
 
-
-      $('#thesis-argument').html(ar);
-      var i;
-      for (i = 0; i < 3; i++) {
-        $('#thesis-claim-' + String(i)).html($.trim($('#claim-' + String(i)).text()));
-      }
-      if ($('#outline-tab').hasClass('disabled')) {
-        $('#outline-tab').removeClass('disabled');
-      }
+    $('#thesis-argument').html(ar);
+    var i;
+    for (i = 0; i < 3; i++) {
+      $('#thesis-claim-' + String(i)).html($.trim($('#claim-' + String(i)).text()));
+    }
+    if ($('#outline-tab').hasClass('disabled')) {
+      $('#outline-tab').removeClass('disabled');
+    }
 
   }, 100));
 
