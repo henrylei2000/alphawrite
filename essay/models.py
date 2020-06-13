@@ -56,11 +56,34 @@ class Outline:
             introduction += " " + c
 
         paragraphs = []
-        for i in range(len(self.claims)):
-            paragraphs.append(self.claims[i] + " " + self.evidences[i])
+
+        paragraph_what = self.claims[0] + " " + self.evidences[0]
+        paragraphs.append(paragraph_what)
+
+        paragraph_nature = self.claims[1] + " " + self.evidences[1]
+        paragraphs.append(paragraph_nature)
+
+        if randrange(10) > 5:
+            prefix_e = "One might object here that"
+            prefix_c = "Nevertheless,"
+        else:
+            prefix_e = "On the one hand, I agree with some proponents that"
+            prefix_c = "But on the other hand, I still insist that"
+        counter_evidence = self.pack(prefix_e, self.evidences[2])
+        counter_claim = self.pack(prefix_c, self.claims[2])
+
+        paragraph_counter = counter_evidence + " " + counter_claim
+        paragraphs.append(paragraph_counter)
 
         conclusion = introduction
         return {'introduction': introduction, 'paragraphs': paragraphs, 'conclusion': conclusion}
+
+    def pack(self, prefix, sentence):
+        packed = sentence
+        first_word = packed.split(' ', 1)[0]
+        if first_word not in self.entities:
+            packed = packed[0].lower() + packed[1:]
+        return prefix + " " + packed
 
 
 # model for transition

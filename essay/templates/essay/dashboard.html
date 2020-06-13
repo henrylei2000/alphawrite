@@ -275,7 +275,7 @@ $(function() {
         url: url,
         data: {
           argument: $.trim($('#argument').text()),
-          entities: $('#entities').val(),
+          entities: $('#entities').text(),
           'claims[]': [$.trim($('#claim-0').text()), $.trim($('#claim-1').text()), $.trim($('#claim-2').text())],
           'evidences[]': [$.trim($('#evidence-0').text()), $.trim($('#evidence-1').text()), $.trim($('#evidence-2').text())],
         },
