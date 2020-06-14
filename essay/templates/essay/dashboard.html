@@ -56,8 +56,7 @@ textarea:focus {
   border-color: #28a745;
 }
 
-.editable
-{
+.editable {
      display: inline-block;
      word-wrap: break-word;
      padding: 30px;
@@ -66,9 +65,19 @@ textarea:focus {
      outline: 0;
 }
 
-[data-placeholder]:empty:before {
-     content: attr(data-placeholder);
-     font-style: italic;
+.introduction-block {
+  background-color: #f3c3c3;
+}
+
+.significance-block {
+  background-color: #90f390;
+}
+
+[data-placeholder]:empty:before{
+  content: attr(data-placeholder);
+  pointer-events: none;
+  display: block; /* For Firefox */
+  font-style: italic;
 }
 
 </style>
@@ -145,12 +154,12 @@ textarea:focus {
     <!-- outline -->
     <div class="tab-pane fade " id="outline" role="tabpanel" aria-labelledby="outline-tab">
       <div class="container">
-        <p><h6>{{ idea.topic }}</h6></p>
-        <p><span id="outline-introduction" contenteditable="true"></span></p>
-        <p><span id="outline-paragraph-0"></span></p>
-        <p><span id="outline-paragraph-1"></span></p>
-        <p><span id="outline-paragraph-2"></span></p>
-        <p><span id="outline-conclusion"></span></p>
+        <p><strong>{{ idea.topic }}</strong></p>
+        <p><span id="outline-introduction" class="editable introduction-block" contenteditable="true"></span></p>
+        <p><span id="outline-paragraph-0" class="editable" contenteditable="true"></span></p>
+        <p><span id="outline-paragraph-1" class="editable" contenteditable="true"></span></p>
+        <p><span id="outline-paragraph-2" class="editable" contenteditable="true"></span></p>
+        <p><span id="outline-conclusion" class="editable" contenteditable="true"></span></p>
       </div>
     </div>
     <!-- end of outline -->
