@@ -37,7 +37,7 @@ class Thesis:
         return {'argument': argument, 'evidences': evidences}
 
 
-class Outline:
+class Draft:
     def __init__(self, elements):
         self.type = ""
         self.structure = ""

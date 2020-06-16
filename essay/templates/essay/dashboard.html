@@ -93,7 +93,7 @@ textarea:focus {
       <a class="nav-link disabled" id="thesis-tab" data-toggle="tab" href="#thesis" role="tab" aria-controls="thesis" aria-selected="false"><i class="fas fa-apple-alt"></i> Thesis</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link disabled" id="outline-tab" data-toggle="tab" href="#outline" role="tab" aria-controls="outline" aria-selected="false"><i class="fas fa-layer-group"></i> Outline</a>
+      <a class="nav-link disabled" id="draft-tab" data-toggle="tab" href="#draft" role="tab" aria-controls="draft" aria-selected="false"><i class="fas fa-layer-group"></i> Draft</a>
     </li>
     <li class="nav-item">
       <a class="nav-link disabled" data-toggle="tab" href="#proofreading" role="tab" aria-controls="proofreading" aria-selected="false"><i class="fas fa-eye"></i> Proofreading</a>
@@ -151,18 +151,18 @@ textarea:focus {
     </div>
     <!-- end of thesis -->
 
-    <!-- outline -->
-    <div class="tab-pane fade " id="outline" role="tabpanel" aria-labelledby="outline-tab">
+    <!-- draft -->
+    <div class="tab-pane fade " id="draft" role="tabpanel" aria-labelledby="draft-tab">
       <div class="container">
         <p><strong>{{ idea.topic }}</strong></p>
-        <p><span id="outline-introduction" class="editable introduction-block" contenteditable="true"></span></p>
-        <p><span id="outline-paragraph-0" class="editable" contenteditable="true"></span></p>
-        <p><span id="outline-paragraph-1" class="editable" contenteditable="true"></span></p>
-        <p><span id="outline-paragraph-2" class="editable" contenteditable="true"></span></p>
-        <p><span id="outline-conclusion" class="editable" contenteditable="true"></span></p>
+        <p><span id="draft-introduction" class="editable introduction-block" contenteditable="true"></span><span class="editable significance-block" contenteditable="true">test</span></p>
+        <p><span id="draft-paragraph-0" class="editable" contenteditable="true"></span></p>
+        <p><span id="draft-paragraph-1" class="editable" contenteditable="true"></span></p>
+        <p><span id="draft-paragraph-2" class="editable" contenteditable="true"></span></p>
+        <p><span id="draft-conclusion" class="editable" contenteditable="true"></span></p>
       </div>
     </div>
-    <!-- end of outline -->
+    <!-- end of draft -->
 
     <!-- proofreading -->
     <div class="tab-pane fade" id="proofreading" role="tabpanel" aria-labelledby="proofreading-tab">
@@ -221,9 +221,7 @@ $(function() {
       $(this).addClass("filled");
       $(this).siblings('.form-label').addClass('filled');
     }
-  }, 300));
 
-  $('.ideas').on('keyup paste', debounce(function() {
     if ($('.ideas.filled').length >= $('.ideas').length - 1) {
       if ($('#thesis-tab').hasClass('disabled')) {
         $('#thesis-tab').removeClass('disabled');
@@ -246,8 +244,8 @@ $(function() {
     for (i = 0; i < 3; i++) {
       $('#thesis-claim-' + String(i)).html($.trim($('#claim-' + String(i)).text()));
     }
-    if ($('#outline-tab').hasClass('disabled')) {
-      $('#outline-tab').removeClass('disabled');
+    if ($('#draft-tab').hasClass('disabled')) {
+      $('#draft-tab').removeClass('disabled');
     }
 
   }, 100));
@@ -276,8 +274,8 @@ $(function() {
         }
       });
     }
-    if ($(e.target).attr('id') == 'outline-tab') {
-      var url = "{% url 'essay:outline' %}";
+    if ($(e.target).attr('id') == 'draft-tab') {
+      var url = "{% url 'essay:draft' %}";
       $.ajax({
         headers: {'X-CSRFToken': '{{csrf_token}}'},
         method: "POST",
@@ -289,11 +287,11 @@ $(function() {
           'evidences[]': [$.trim($('#evidence-0').text()), $.trim($('#evidence-1').text()), $.trim($('#evidence-2').text())],
         },
         success: function (data) {
-          $('#outline-introduction').html(data['introduction']);
+          $('#draft-introduction').html(data['introduction']);
           for (i=0; i<data['paragraphs'].length; i++) {
-            $('#outline-paragraph-' + String(i)).html(data['paragraphs'][i]);
+            $('#draft-paragraph-' + String(i)).html(data['paragraphs'][i]);
           }
-          $('#outline-conclusion').html(data['conclusion']);
+          $('#draft-conclusion').html(data['conclusion']);
         }
       });
     }

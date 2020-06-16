@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from .models import Transition, Verb, Thesis, Assignment, Idea, Outline
+from .models import Transition, Verb, Thesis, Assignment, Idea, Draft
 
 
 def index(request):
@@ -38,7 +38,7 @@ def build(request):
     return JsonResponse(thesis.prepare())
 
 
-def outline(request):
+def draft(request):
     elements = {
         'argument': request.POST['argument'],
         'claims': request.POST.getlist('claims[]'),
@@ -46,7 +46,7 @@ def outline(request):
         'entities': request.POST['entities'],
     }
 
-    o = Outline(elements)
+    o = Draft(elements)
     return JsonResponse(o.generate())
 
 
