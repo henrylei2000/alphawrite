@@ -176,6 +176,7 @@ textarea:focus {
 
 {% block javascript %}
 <script>
+
 function debounce(func, wait, immediate) {
     var timeout;
     return function() {
@@ -252,6 +253,21 @@ $(function() {
 
   $('.nav-tabs a').on('shown.bs.tab', function(e){
     if ($(e.target).attr('id') == 'thesis-tab') {
+
+      var db = firebase.firestore();
+
+      db.collection("topics").add({
+          topic: "{{ idea.topic }}"
+      })
+      .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function(error) {
+          console.error("Error adding document: ", error);
+      });
+
+
+
       var url = "{% url 'essay:build' %}";
       $.ajax({
         headers: {'X-CSRFToken': '{{csrf_token}}'},
