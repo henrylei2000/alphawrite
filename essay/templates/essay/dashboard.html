@@ -266,8 +266,6 @@ $(function() {
           console.error("Error adding document: ", error);
       });
 
-
-
       var url = "{% url 'essay:build' %}";
       $.ajax({
         headers: {'X-CSRFToken': '{{csrf_token}}'},

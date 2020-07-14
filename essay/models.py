@@ -349,3 +349,18 @@ class Idea:
         questions = q_fact + q_definition + q_quality  # + q_policy
 
         return questions
+
+
+class Article:
+    def __init__(self, content):
+        self.content = content
+
+    def parse(self):
+        nlp = spacy.load('en_core_web_sm')
+        doc = nlp(self.content)
+        output = "a"
+        counter = 0
+        for sentence in doc.sents:
+            counter += 1
+        return str(counter)
+

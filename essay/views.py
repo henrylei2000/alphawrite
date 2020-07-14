@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 
-from .models import Transition, Verb, Thesis, Assignment, Idea, Draft
+from .models import Transition, Verb, Thesis, Assignment, Idea, Draft, Article
 
 
 def index(request):
@@ -50,10 +50,13 @@ def draft(request):
     return JsonResponse(o.generate())
 
 
-def span(request):
-    assignment = request.POST['assignment']
-    purpose = Assignment(assignment).process().get_purpose()
-    return JsonResponse({'topic': "The purpose of this writing: " + purpose})
+def read(request):
+    return render(request, 'essay/read.html')
+
+
+def parse(request):
+    article = Article(request.POST['content'])
+    return JsonResponse({'topic': "The purpose of this writing: " + article.parse()})
 
 
 def ideas(request):

@@ -8,6 +8,7 @@ urlpatterns = [
     path('dashboard', views.dashboard, name='dashboard'),
     path('build', views.build, name='build'),
     path('draft', views.draft, name='draft'),
-    path('span', views.span, name='span'),
+    path('read', views.read, name='read'),
+    path('parse', views.parse, name='parse'),
     path('ideas', views.ideas, name='ideas'),
 ]
