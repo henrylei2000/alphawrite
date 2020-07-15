@@ -358,9 +358,12 @@ class Article:
     def parse(self):
         nlp = spacy.load('en_core_web_sm')
         doc = nlp(self.content)
-        output = "a"
-        counter = 0
-        for sentence in doc.sents:
-            counter += 1
-        return str(counter)
+        p = 1
+        for sent in doc.sents:
+            if "\n" in sent.string:
+                p += 1
+
+        # sentences = [sent.string.strip("<br>") for sent in doc.sents]
+
+        return str(p)
 

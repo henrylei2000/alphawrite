@@ -56,7 +56,7 @@ def read(request):
 
 def parse(request):
     article = Article(request.POST['content'])
-    return JsonResponse({'topic': "The purpose of this writing: " + article.parse()})
+    return HttpResponse(article.parse())
 
 
 def ideas(request):
