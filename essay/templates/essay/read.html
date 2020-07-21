@@ -4,23 +4,62 @@
 html,body{
     height:100%;
 }
+
+.editable {
+     display: inline-block;
+     word-wrap: break-word;
+     padding: 30px;
+     background-color: #f3f3f3;
+     border-radius: 3px;
+     outline: 0;
+}
+
+[data-placeholder]:empty:before{
+  content: attr(data-placeholder);
+  pointer-events: none;
+  display: block; /* For Firefox */
+  font-style: italic;
+}
+
+.significance-block {
+  background-color: #90f390;
+}
 </style>
 {% endblock style%}
 
 {% block content %}
 <body class="bg-light">
-  <div class="container-fluid">
-      <form action="{% url 'essay:parse' %}" method="post">
+  <div class="container-fluid h-75">
+    <div class="h-25"></div>
+    <p><span id="article" class="editable significance-block" contenteditable="true" data-placeholder="Copy and paste your article here."></span></p>
+    <div class="row h-25 justify-content-center">
+      <form action="{% url 'essay:parse' %}" method="post" class="form-inline">
           {% csrf_token %}
-        <div class="form-group">
-          <label for="content">Copy & paste an article</label>
-          <textarea class="form-control" id="content" name="content" rows="20"></textarea>
-        </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary float-right"><i class="fas fa-angle-right"></i></button>
+        <textarea name="content" id="content" type="hidden"></textarea>
+        <div class="form-group col-sm-1">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-angle-right"></i></button>
         </div>
       </form>
+    </div>
+
   </div>
 </body>
 {% endblock content %}
+
+{% block javascript %}
+<script>
+$(function() {
+  $('#content').hide();
+  $('button').click(function (e) {
+    e.preventDefault();
+    var c = $.trim($('#article').html());
+    if (c.length > 0) {
+      $('#content').val(c);
+      $('form').submit();
+    }
+  });
+});
+</script>
+{% endblock javascript %}
+
 
