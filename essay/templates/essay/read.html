@@ -53,6 +53,9 @@ $(function() {
   $('button').click(function (e) {
     e.preventDefault();
     var c = $.trim($('#article').html());
+    alert(c);
+    c = c.replace(/<(.|\n)*?>/g, ' ');
+    alert(c);
     if (c.length > 0) {
       $('#content').val(c);
       $('form').submit();

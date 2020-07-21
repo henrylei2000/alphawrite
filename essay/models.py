@@ -359,11 +359,17 @@ class Article:
         nlp = spacy.load('en_core_web_sm')
         paragraphs = self.content.split('<br>')
 
+        simplified = ""
         for p in paragraphs:
             doc = nlp(p)
-            p = 0
-            for sent in doc.sents:
-                p += 1
+            # only keep first and last sentences
+            sentences = list(doc.sents)
+            n = len(sentences)
+            if n:
+                simplified += str(sentences[0])
+                if n > 1:
+                    simplified += str(sentences[n - 1])
+                simplified += "<br>"
 
-        return paragraphs[0]
+        return simplified
 
