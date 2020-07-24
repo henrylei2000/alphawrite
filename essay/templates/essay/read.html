@@ -50,11 +50,20 @@ html,body{
 <script>
 $(function() {
   $('#content').hide();
+
+  $('#article').on('paste', function() {
+    $this = $(this);
+    setTimeout(function() {
+        $this.html($this.html().replace(/\<\/p\>/g," [br]").replace(/\<br\>/g," [br]").replace(/\<\/div\>/g," [br]").replace(/(<\/h)([0-6])>/g, " [br]"));
+        // remove all the tags, and then replace the tokens for their original values
+        $this.html($this.text().replace(/\[p\]/g, "<br>").replace(/\[br\]/g,"<br>").replace(/\[div\]/g,"<br>").replace(/(\[h\])([0-6])/g, "<br>"));
+        $('#article').html($this.html());
+    }, 100);
+  });
+
   $('button').click(function (e) {
     e.preventDefault();
     var c = $.trim($('#article').html());
-    alert(c);
-    c = c.replace(/<(.|\n)*?>/g, ' ');
     alert(c);
     if (c.length > 0) {
       $('#content').val(c);

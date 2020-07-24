@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block style %}
+<style>
+html,body{
+    height:100%;
+}
+</style>
+{% endblock style%}
+
+{% block content %}
+<body class="bg-light">
+  <div class="container">
+    <div class="row">
+      <h3>We've simplified the text from {{ wc.0 }} words to {{ wc.1 }} words for you.</h3>
+    </div>
+    <div class="row">
+      <h5 class="text-secondary">Keywords:
+        {% for kw in keywords %}
+            {{ kw }}
+        {% endfor %}
+        </h5>
+    </div>
+    <br><br>
+    <div class="row">
+      {{ parsed | linebreaks }}
+    </div>
+  </div>
+</body>
+{% endblock content %}
+
+

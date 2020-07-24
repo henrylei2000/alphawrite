@@ -1,4 +1,5 @@
 import datetime
+from collections import Counter
 
 from django.db import models
 from django.utils import timezone
@@ -353,23 +354,44 @@ class Idea:
 
 class Article:
     def __init__(self, content):
-        self.content = content
+        self.content = content.replace('. <br>', '.<br>').replace('&nbsp;', ' ')
+        self.nlp = spacy.load('en_core_web_sm')
+        self.simplified = ''
 
     def parse(self):
-        nlp = spacy.load('en_core_web_sm')
+
         paragraphs = self.content.split('<br>')
 
         simplified = ""
         for p in paragraphs:
-            doc = nlp(p)
+            doc = self.nlp(p.replace("&nbsp;", " "))
             # only keep first and last sentences
             sentences = list(doc.sents)
             n = len(sentences)
             if n:
-                simplified += str(sentences[0])
-                if n > 1:
-                    simplified += str(sentences[n - 1])
-                simplified += "<br>"
-
+                simplified += str(sentences[0]).strip()
+                # if n > 1:
+                # simplified += str(sentences[n - 1])
+                simplified += "\n"
+        self.simplified = simplified
         return simplified
 
+    def words(self):
+        wc = []
+        doc = self.nlp(self.content.replace('<br>', ' '))
+        # remove stopwords and punctuations
+        words = [token.text for token in doc]
+        wc.append(len(words))
+        doc = self.nlp(self.simplified)
+        # remove stopwords and punctuations
+        words = [token.text for token in doc]
+        wc.append(len(words))
+        return wc
+
+    def keywords(self):
+        doc = self.nlp(self.content.replace('<br>', ' '))
+        # remove stopwords and punctuations
+        words = [token.text for token in doc if token.is_stop != True and token.is_punct != True]
+        word_freq = Counter(words)
+        common_words = word_freq.most_common(5)
+        return common_words

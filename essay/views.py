@@ -56,7 +56,12 @@ def read(request):
 
 def parse(request):
     article = Article(request.POST['content'])
-    return HttpResponse(article.parse())
+    return render(request, 'essay/parse.html', {
+        'parsed': article.parse(),
+        'wc': article.words(),
+        'keywords': article.keywords(),
+
+    })
 
 
 def ideas(request):
