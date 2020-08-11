@@ -25,6 +25,30 @@ def dashboard(request):
         })
 
 
+def questions(request):
+    topic = request.POST['topic']
+    idea = Idea(topic)
+
+    if idea.blocked():
+        return
+    else:
+        return JsonResponse(idea.build_questions())
+
+
+def ideas(request):
+    topic = request.POST['topic']
+    idea = Idea(topic)
+
+    if idea.blocked():
+        return render(request, 'essay/topic.html', {'idea': idea})
+    else:
+        return render(request, 'essay/ideas.html', {
+            'idea': idea,
+            'questions': idea.generate_questions,
+            'evidence_types': ['cloud', 'cloud-rain', 'cloud-sun'],
+        })
+
+
 def build(request):
     ideas = {
         'fact': request.POST['fact'],
@@ -62,15 +86,4 @@ def parse(request):
         'wc': article.words(),
         'keywords': article.keywords,
 
-    })
-
-
-def ideas(request):
-    topic = request.POST['topic']
-    nature = request.POST['nature']
-    idea = Idea(topic, nature)
-    return render(request, 'essay/ideas.html', {
-        'topic': topic,  # pass the variable to html page
-        'nature': nature,
-        'questions': idea.get_questions()
     })

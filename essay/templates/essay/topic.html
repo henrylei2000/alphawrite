@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block style %}
+<style>
+.editable {
+     display: inline-block;
+     word-wrap: break-word;
+     /* background-color: #f3f3f3; */
+     border-radius: 3px;
+     outline: 0;
+     caret-color: transparent;
+}
+
+.caret {
+    caret-color: auto;
+}
+
+[data-placeholder]:empty:before{
+  content: attr(data-placeholder);
+  pointer-events: none;
+  display: block; /* For Firefox */
+  font-size: 2em;
+  color: #9595a5;
+}
+
+.cursor {
+    position: relative;
+}
+.cursor i {
+    position: absolute;
+    width: 1px;
+    height: 60%;
+    background-color: black;
+    left: 0px;
+    top: 30%;
+    animation-name: blink;
+    animation-duration: 1250ms;
+    animation-iteration-count: infinite;
+    opacity: 1;
+}
+
+.cursor input:focus + i {
+    display: none;
+}
+
+@keyframes blink {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+</style>
+{% endblock style%}
+{% block content %}
+<div id="first-row" class="container-fluid h-50 mt-4"></div>
+<div id="prompt" class="row">
+    <div id="panel" class="cursor h-75 d-inline-block"><span id="content" class="editable" contenteditable="true" data-placeholder="Topic, title, keywords, prompt, or assignment"></span><i></i></div>
+</div>
+<div id="ideas">
+    <div class="row"><div><span id="q-0" data-placeholder=""></span><i></i></div></div>
+    <div class="row"><span id="a-0" class="editable" contenteditable="true" data-placeholder="test">&nbsp;</span><i></i></div>
+</div>
+<div class="row">
+      <button id="continue" class="btn btn-primary btn-block col-sm-2">Continue</button>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+
+function aj(url, data) {
+    $.ajax({
+        headers: {'X-CSRFToken': '{{csrf_token}}'},
+        method: "POST",
+        url: url,
+        data: data,
+        success: function (data) {
+          $('#prompt').hide();
+          $('#ideas').show();
+          if (step == 0) $('#first-row').append('<div><span class="badge badge-danger">Topic</span> ' + topic + '</div>');
+          var answer = $.trim($('#a-0').html());
+          var c = answer.replace(/&nbsp;/g, "");
+          if (c.length > 0 && step == 1) $('#first-row').append('<div><span class="badge badge-success">Fact</span> <span class="editable" contenteditable="true">' + answer + '</span></div>');
+          if (c.length > 0 && step == 2) $('#first-row').append('<div><span class="badge badge-primary">Nature</span> ' + answer + '</div>');
+          if (c.length > 0 && step == 3) $('#first-row').append('<div><span class="badge badge-warning">Quality</span> ' + answer + '</div>');
+          if (c.length > 0 && step == 4) $('#first-row').append('<div><span class="badge badge-info">Measurement</span> ' + answer + '</div>');
+          $('#a-0').html(' ');
+          $('#a-0').focus();
+          $('#a-0').addClass('caret');
+          $('#q-0').attr('data-placeholder',data['questions'][step]);
+          $('#continue').hide();
+
+          if (step < 4) step++;
+        }
+    });
+}
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
+
+var topic;
+var step = 0;
+$(function() {
+
+  $('#continue').hide();
+  $('#ideas').hide();
+  $('#content').focus();
+
+  $('#content').keydown(function(){
+    $("#panel").removeClass("cursor");
+    $("#content").addClass("caret");
+  });
+
+  $('#content').keyup(function(){
+    var c = $.trim($('#content').html());
+    if (c.length == 0) {
+        $("#panel").addClass("cursor");
+        $("#content").removeClass("caret");
+    }
+  });
+
+  $('#content').on('paste', function() {
+    $("#panel").removeClass("cursor");
+    $("#content").addClass("caret");
+    $this = $(this);
+    setTimeout(function() {
+        $this.html($this.html().replace(/\<\/p\>/g," [br]").replace(/\<br\>/g," [br]").replace(/\<\/div\>/g," [br]").replace(/(<\/h)([0-6])>/g, " [br]"));
+        // remove all the tags, and then replace the tokens for their original values
+        $this.html($this.text().replace(/\[p\]/g, "<br>").replace(/\[br\]/g,"<br>").replace(/\[div\]/g,"<br>").replace(/(\[h\])([0-6])/g, "<br>"));
+        $('#content').html($this.html());
+    }, 100);
+  });
+
+  $('.editable').on('keyup paste', debounce(function() {
+    var c = $.trim($('#content').html());
+    if (c.length > 5) {
+      $('#continue').show();
+    }
+  }, 1500));
+
+
+  $('#continue').click(function (e) {
+    var c = $.trim($('#content').html());
+    topic = c.replace(/&nbsp;/g, " ");
+    /* ajax call */
+      var url = "{% url 'essay:questions' %}";
+      aj(url, {topic: topic,}, 0);
+
+  });
+
+  $('#ideas').click(function(e) {
+    $('#a-0').focus();
+    $('#a-0').addClass('caret');
+  });
+});
+</script>
+{% endblock javascript %}

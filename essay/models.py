@@ -351,6 +351,9 @@ class Idea:
 
         return questions
 
+    def build_questions(self):
+        return {'questions': self.generate_questions()}
+
 
 class Article:
     def __init__(self, content):
@@ -393,11 +396,11 @@ class Article:
     def words(self):
         wc = []
         doc = self.nlp(self.content.replace('<br>', ' '))
-        # remove stopwords and punctuations
+
         words = [token.text for token in doc]
         wc.append(len(words))
         doc = self.nlp(self.simplified)
-        # remove stopwords and punctuations
+
         words = [token.text for token in doc]
         wc.append(len(words))
         return wc
