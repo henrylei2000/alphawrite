@@ -3,7 +3,8 @@ from collections import Counter
 
 from django.db import models
 from django.utils import timezone
-from random import *
+import random
+from .dictionary import Question
 import spacy
 
 
@@ -204,40 +205,6 @@ class Assignment:
 
 
 class Idea:
-    questions = [
-        # Facts
-        "{F}How did it begin and what are the causes?",
-        "{F}What happened to {ENTS}?",
-        "{F}What is the story behind {ENTS}?",
-        "{F}What do we know about \"{SUBJ}\"?",
-        "{F}What happened to \"{SUBJ}\"?",
-        "{F}What do we know about {SUBJ} and {OBJ}?",
-        "{F}Any knowledge about \"{SUBJ}\" and \"{OBJ}\"?",
-
-        # Definition
-        "{D}What are its parts, and how are they related?",
-        "{D}What is the nature of \"{SUBJ}\"?",
-        "{D}What are the components of \"{SUBJ}?\"",
-        "{D}What are the attributes of \"{OBJ}\"?",
-        "{D}What are similar concepts to \"{OBJ}\"?",
-        "{D}How are \"{SUBJ}\" and \"{OBJ}\" related?",
-        "{D}What are similar concepts to \"{SUBJ}\" and \"{OBJ}\"?",
-
-        # Quality
-        "{Q1}Is it good or bad?",
-        "{Q2}What would be a different evaluation on \"{SUBJ}\"?",
-        "{Q1}Is \"{SUBJ}\" positive or negative?",
-        "{Q2}What if we measure \"{SUBJ}\" differently?",
-        "{Q1}What role does \"{OBJ}\" serve?",
-        "{Q1}Opinion about \"{OBJ}\" in the topic?",
-        "{Q2}Any different measurement about \"{OBJ}\"?",
-
-        # Policy
-        "{P}With previous ideas, what do you want to advocate?",
-        "{P}Suggestion about \"{SUBJ}\" and \"{OBJ}\"?",
-        "{P}What do you want to advocate about the \"{SUBJ}\"?",
-    ]
-
     def __init__(self, topic):
         self.topic = topic
         self.subject = ""
@@ -245,6 +212,7 @@ class Idea:
         self.object = ""
         self.entities = []
         self.processed = False
+        self.questions = Question.dict
 
     def blocked(self):
         if '</script>' in self.topic:
@@ -319,37 +287,41 @@ class Idea:
         return self
 
     def generate_questions(self):
-
-        qs = []
-
-        # replaced with subj, obj, and entities
-        for q in self.questions:
-            qs.append(q.replace('{SUBJ}', '--' + self.subject + '--').
-                      replace('{OBJ}', '--' + self.object + '--').
-                      replace('{ENTS}', '--' + self.entities + '--'))
-
-        # filter
-        shuffle(qs)
         q_fact = ['']
         q_definition = ['']
         q_quality = [''] * 2
         q_policy = ['']
-        for q in qs:
-            if '----' not in q:
-                if '{F}' in q and not q_fact[0]:
-                    q_fact[0] = q.replace('{F}', '').replace('--', '')
-                if '{D}' in q and not q_definition[0]:
-                    q_definition[0] = q.replace('{D}', '').replace('--', '')
-                if '{Q1}' in q and not q_quality[0]:
-                    q_quality[0] = q.replace('{Q1}', '').replace('--', '')
-                if '{Q2}' in q and not q_quality[1]:
-                    q_quality[1] = q.replace('{Q2}', '').replace('--', '')
-                if '{P}' in q and not q_policy[0]:
-                    q_policy[0] = q.replace('{P}', '').replace('--', '')
+        for badge, qs in self.questions.items():
+            # replaced with subj, obj, and entities
+            random.shuffle(qs)
+            for question in qs:
+                q = question.replace('{SUBJ}', '--' + self.subject + '--').replace('{OBJ}', '--' + self.object + '--').replace('{ENTS}', '--' + self.entities + '--')
+                if '----' not in q:
+                    if '{F}' in q and not q_fact[0]:
+                        q_fact[0] = q.replace('{F}', '').replace('--', '')
+                    if '{D}' in q and not q_definition[0]:
+                        q_definition[0] = q.replace('{D}', '').replace('--', '')
+                    if '{Q1}' in q and not q_quality[0]:
+                        q_quality[0] = q.replace('{Q1}', '').replace('--', '')
+                    if '{Q2}' in q and not q_quality[1]:
+                        q_quality[1] = q.replace('{Q2}', '').replace('--', '')
+                    if '{P}' in q and not q_policy[0]:
+                        q_policy[0] = q.replace('{P}', '').replace('--', '')
 
         questions = q_fact + q_definition + q_quality  # + q_policy
 
         return questions
+
+    def generate_question(self, stasis):
+        question = ''
+        qs = self.questions.get(stasis)
+        random.shuffle(qs)
+        for q in qs:
+            candidate = q.replace('{SUBJ}', '--' + self.subject + '--').replace('{OBJ}','--' + self.object + '--').replace('{ENTS}', '--' + self.entities + '--')
+            if '----' not in candidate:
+                question = candidate.replace('{F}', '').replace('{D}', '').replace('{Q1}', '').replace('{Q2}', '').replace('{P}', '').replace('--', '')
+
+        return {'stasis': stasis, 'question': question}
 
     def build_questions(self):
         return {'questions': self.generate_questions()}
