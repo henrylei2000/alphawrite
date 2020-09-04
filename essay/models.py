@@ -210,7 +210,7 @@ class Idea:
         self.subject = ""
         self.verb = ""
         self.object = ""
-        self.entities = []
+        self.entities = ""
         self.processed = False
         self.questions = Question.dict
 
@@ -295,7 +295,9 @@ class Idea:
             # replaced with subj, obj, and entities
             random.shuffle(qs)
             for question in qs:
-                q = question.replace('{SUBJ}', '--' + self.subject + '--').replace('{OBJ}', '--' + self.object + '--').replace('{ENTS}', '--' + self.entities + '--')
+                q = question.replace('{SUBJ}', '--' + self.subject + '--').replace('{OBJ}',
+                                                                                   '--' + self.object + '--').replace(
+                    '{ENTS}', '--' + self.entities + '--')
                 if '----' not in q:
                     if '{F}' in q and not q_fact[0]:
                         q_fact[0] = q.replace('{F}', '').replace('--', '')
@@ -317,9 +319,13 @@ class Idea:
         qs = self.questions.get(stasis)
         random.shuffle(qs)
         for q in qs:
-            candidate = q.replace('{SUBJ}', '--' + self.subject + '--').replace('{OBJ}','--' + self.object + '--').replace('{ENTS}', '--' + self.entities + '--')
+            candidate = q.replace('{SUBJ}', '--' + self.subject + '--').replace('{OBJ}',
+                                                                                '--' + self.object + '--').replace(
+                '{ENTS}', '--' + self.entities + '--')
             if '----' not in candidate:
-                question = candidate.replace('{F}', '').replace('{D}', '').replace('{Q1}', '').replace('{Q2}', '').replace('{P}', '').replace('--', '')
+                question = candidate.replace('{F}', '').replace('{D}', '').replace('{Q1}', '').replace('{Q2}',
+                                                                                                       '').replace(
+                    '{P}', '').replace('--', '')
 
         return {'stasis': stasis, 'question': question}
 
@@ -380,7 +386,7 @@ class Article:
     def common_words(self, n=5):
         doc = self.nlp(self.content.replace('<br>', ' '))
         # remove stopwords and punctuations
-        words = [token.text for token in doc if token.is_stop != True and token.is_punct != True]
+        words = [token.text for token in doc if not token.is_stop and not token.is_punct and len(token.text.strip())]
         word_freq = Counter(words)
         common_words = word_freq.most_common(n)
         return common_words

@@ -1,15 +1,6 @@
 {% extends "base.html" %}
 {% block style %}
 <style>
-textarea {
-     display: inline-block;
-     word-wrap: break-word;
-     /* background-color: #f3f3f3; */
-     border-radius: 3px;
-     outline: 0;
-     caret-color: transparent;
-}
-
 .caret {
     caret-color: auto;
 }
@@ -28,11 +19,9 @@ textarea {
     animation-iteration-count: infinite;
     opacity: 1;
 }
-
 .cursor input:focus + i {
     display: none;
 }
-
 @keyframes blink {
     from { opacity: 1; }
     to { opacity: 0; }
@@ -49,6 +38,10 @@ textarea {
     background: transparent;
 
     resize: none; /*remove the resize handle on the bottom right*/
+    display: inline-block;
+    word-wrap: break-word;
+    border-radius: 3px;
+    caret-color: transparent;
 }
 
 ::placeholder {
@@ -56,10 +49,10 @@ textarea {
   display: block; /* For Firefox */
   font-size: 2em;
 }
-
 </style>
 {% endblock style%}
 {% block content %}
+<div class="h-100" id="questions">
 <div id="first-row" class="d-flex h-50 mt-4"></div>
 <div id="prompt" class="row mt-2 cursor"><textarea id="content" rows="2" cols="150" maxlength="300" placeholder="Enter a topic, title, or prompt. See how we can help."></textarea><i></i></div>
 <div id="ideas">
@@ -69,13 +62,13 @@ textarea {
 <div class="row">
     <button id="continue" class="btn btn-primary btn-block col-sm-2">Continue</button>
 </div>
-
-
+</div>
+<div id="thesis">
+</div>
 {% endblock content %}
 
 {% block javascript %}
 <script>
-
 function collectIdeas(url, data) {
     $.ajax({
         headers: {'X-CSRFToken': '{{csrf_token}}'},
@@ -84,18 +77,29 @@ function collectIdeas(url, data) {
         data: data,
         success: function (data) {
           $('#prompt').hide();
-          if (step == 0) $('#first-row').append('<div><sup><span class="badge badge-dark">Topic</span></sup> ' + topic + '</div>');
+          if (step == 0) $('#first-row').append('<div id="step' + step + '"><sup><span class="badge badge-dark">Topic</span></sup> ' + topic + '</div>');
           var answer = $.trim($('#answer').val());
           var c = answer.replace(/&nbsp;/g, "");
-          if (c.length > 0) $('#first-row').append('<div class="mr-2"><sup><span class="badge badge-success">' + badge + '</span></sup> ' + answer + '</div>');
-          badge = data['stasis'];
-          $('#question').attr('placeholder',data['question']);
-          $('#ideas').show(500);
-          $('#continue').hide();
-          $('#answer').val('');
-          $('#answer').focus();
-          $('#answer').addClass('caret');
-          if (step < 4) step++;
+          if (c.length > 0) $('#first-row').append('<div id="step' + step + '" class="mr-2"><sup><span class="badge badge-success">' + badge + '</span></sup> ' + answer + '</div>');
+          if (step < 4) {
+              badge = data['stasis'];
+              $('#question').attr('placeholder',data['question']);
+              $('#ideas').show(500);
+              $('#continue').hide();
+              $('#answer').val('');
+              $('#answer').focus();
+              $('#answer').addClass('caret');
+          } else {
+            $('#questions').hide();
+            $('#thesis').append($('#step1').html());
+            $('#thesis').append($('#step2').html());
+            $('#thesis').append($('#step3').html());
+            $('#thesis').append($('#step4').html());
+            $('#thesis').append($('#step5').html());
+            $('#thesis').show();
+          }
+
+          step++;
           loading = false;
         },
         error: function() {
@@ -122,11 +126,12 @@ function debounce(func, wait, immediate) {
 var topic;
 var step = 0;
 var loading = false;
-var stasis = ['Observation', 'Nature', 'Evaluation', 'Complication', 'Policy'];
+var stasis = ['Evaluation', 'Observation', 'Nature', 'Complication', 'Complication'];
 var badge;
 $(function() {
   $('#continue').hide();
   $('#ideas').hide();
+  $('#thesis').hide();
   $('#content').focus();
 
   $('#content').keydown(function(){
@@ -160,7 +165,7 @@ $(function() {
         var c = $.trim($('#content').val());
         topic = c.replace(/&nbsp;/g, " ");
         if (topic.length > 5) {
-          $('#continue').show(100);
+            $('#continue').show(100);
         } else if (topic.length == 0) {
             $("#panel").addClass("cursor");
             $("#content").removeClass("caret");
@@ -179,15 +184,18 @@ $(function() {
   $('#continue').click(function (e) {
     if (loading) return;
     loading = true;
-    if (step < 5) {
+    if (step <= stasis.length) {
         var url = "{% url 'essay:questions' %}";
         collectIdeas(url, {topic: topic, stasis: stasis[step]});
+    } else {
+        $('#questions').hide();
+        $('#thesis').append($('#step1').html());
+        $('#thesis').append($('#step2').html());
+        $('#thesis').append($('#step3').html());
+        $('#thesis').append($('#step4').html());
+        $('#thesis').append($('#step5').html());
+        $('#thesis').show();
     }
-  });
-
-  $('#ideas').click(function(e) {
-    $('#answer').addClass('caret');
-    $('#answer').focus();
   });
 });
 </script>
