@@ -383,10 +383,11 @@ class Article:
         wc.append(len(words))
         return wc
 
-    def common_words(self, n=5):
+    def common_words(self, n=10):
         doc = self.nlp(self.content.replace('<br>', ' '))
         # remove stopwords and punctuations
-        words = [token.text for token in doc if not token.is_stop and not token.is_punct and len(token.text.strip())]
+        words = [token.text.lower() for token in doc if not token.is_stop and not token.is_punct and
+                 not token.text.isdigit() and len(token.text.strip())]
         word_freq = Counter(words)
         common_words = word_freq.most_common(n)
         return common_words
