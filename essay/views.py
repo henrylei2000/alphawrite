@@ -9,7 +9,7 @@ from .models import Transition, Verb, Thesis, Assignment, Idea, Draft, Article
 
 
 def index(request):
-    return render(request, 'essay/index.html')
+    return render(request, 'essay/topic.html')
 
 
 def dashboard(request):
@@ -27,12 +27,13 @@ def dashboard(request):
 
 def questions(request):
     topic = request.POST['topic']
+    stasis = request.POST['stasis']
     idea = Idea(topic)
 
     if idea.blocked():
         return
     else:
-        return JsonResponse(idea.build_questions())
+        return JsonResponse(idea.generate_question(stasis))
 
 
 def ideas(request):
