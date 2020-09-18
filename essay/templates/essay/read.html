@@ -79,6 +79,7 @@ $(function() {
 
   $('button').click(function (e) {
     e.preventDefault();
+    $('button').attr("disabled", true);
     var c = $.trim($('#article').html());
     if (c.length > 0) {
       $('#content').val(c);
