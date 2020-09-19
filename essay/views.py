@@ -87,5 +87,5 @@ def parse(request):
         'parsed': article.parse(),
         'wc': article.words(),
         'keywords': article.keywords,
-
+        'subjectivity': article.adjadv(),
     })

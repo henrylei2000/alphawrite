@@ -5,6 +5,7 @@ from django.db import models
 from django.utils import timezone
 import random
 import spacy
+from textblob import TextBlob
 
 
 class Article:
@@ -65,3 +66,20 @@ class Article:
         word_freq = Counter(words)
         common_words = word_freq.most_common(n)
         return common_words
+
+    def adjadv(self):
+        blobed = TextBlob(self.simplified)
+        counts = Counter(tag for word, tag in blobed.tags)
+        adj_list = []
+        adv_list = []
+        adj_tag_list = ['JJ', 'JJR', 'JJS']
+        adv_tag_list = ['RB', 'RBR', 'RBS']
+        for (a, b) in blobed.tags:
+            if b in adj_tag_list:
+                adj_list.append(a)
+            elif b in adv_tag_list:
+                adv_list.append(a)
+            else:
+                pass
+        return adj_list, adv_list, counts['JJ'] + counts['JJR'] + counts['JJS'], counts['RB'] + counts['RBR'] + counts[
+            'RBS']
