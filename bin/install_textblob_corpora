@@ -5,7 +5,6 @@ source $BIN_DIR/utils
 echo "-----> Starting corpora installation"
 
 # Assumes NLTK_DATA environment variable is already set
-mkdir -p /app/nltk_data
 # $ heroku config:set NLTK_DATA='/app/nltk_data'
 
 # Install the default corpora to NLTK_DATA directory
